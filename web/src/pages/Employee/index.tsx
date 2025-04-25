@@ -30,6 +30,13 @@ export default () => {
     setIsOpenDialog(true)
   }
 
+  const onUpdate = (id: number) => {
+    console.log(id)
+    // @ts-ignore
+    setCurEmployee({...employees.find(e => e.id === id)})
+    setIsOpenDialog(true)
+  }
+
   const onSave = () => {
     setEmployee([...employees, curEmployee])
     setIsOpenDialog(false)
@@ -40,7 +47,12 @@ export default () => {
     <>
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
-      <FTable tableName={'employee hihi'} headers={headers} rows={employees}/>
+      <FTable
+        tableName={'employee hihi'}
+        headers={headers}
+        rows={employees}
+        onUpdate={onUpdate}
+      />
       <EmployeeDialog
         employee={curEmployee}
         setEmployee={setCurEmployee}

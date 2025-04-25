@@ -8,22 +8,27 @@ interface FTable {
   tableName: string
   headers: Header[]
   rows: any[]
+  onUpdate?: (id: number) => void
 }
 
-const RenderActionBtn = (headers: Header[]) => {
+const RenderActionBtn = (
+  headers: Header[],
+  onUpdate: () => void
+) => {
   const keys = headers.map(header => header.name)
   if (!keys.includes('action')) return
 
   return (
     <TableCell>
-      <EditIcon color={'success'}/>
-      <DeleteOutlineIcon color={'error'}/>
+      <EditIcon color={'success'} onClick={onUpdate}/>
+      <DeleteOutlineIcon color={'error'} />
     </TableCell>
   )
 }
 
 
-export default ({tableName, headers, rows}: FTable) => {
+export default ({tableName, headers, rows, onUpdate}: FTable) => {
+
   return (
     <>
       <h2>{tableName}</h2>
@@ -42,16 +47,17 @@ export default ({tableName, headers, rows}: FTable) => {
           <TableBody>
             {
               rows.map((row: any) => {
+                // @ts-ignore
                 return (
                   <TableRow key={row.id}>
                     {
                       Object.keys(row).map((rowKey: string) => {
-                        // @ts-ignore
                         return <TableCell key={`${rowKey}-${row.id}`}>{row[rowKey]}</TableCell>
                       })
                     }
                     {
-                      RenderActionBtn(headers)
+                      // @ts-ignore
+                      RenderActionBtn(headers, () => onUpdate(row.id))
                     }
                   </TableRow>
                 )
