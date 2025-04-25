@@ -31,7 +31,10 @@ export default () => {
         headers={headers}
         rows={products}
       />
-      <DialogContainer isOpen={isOpenDialog} onClose={() => setIsOpenDialog(false)}/>
+      <DialogContainer
+        isOpen={isOpenDialog}
+        onClose={() => setIsOpenDialog(false)}
+      />
     </>
   )
 }

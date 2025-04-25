@@ -1,4 +1,4 @@
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {Stack, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 
 interface DialogContainer {
   isOpen: boolean,
@@ -8,19 +8,14 @@ interface DialogContainer {
 
 export default ({isOpen, onClose, width=450}: DialogContainer)=> {
   return (
-    <Dialog open={isOpen} sx={{width, margin: 'auto'}}>
+    <Dialog open={isOpen} sx={{margin: 'auto'}}>
       <DialogTitle>Dialog Container</DialogTitle>
       <DialogContent>
-        <Box
-          component="form"
-          sx={{ '& .MuiTextField-root': { m: 1 } }}
-          noValidate
-          autoComplete="off"
-        >
+        <Stack sx={{ width: width }} spacing={2}>
           <TextField fullWidth label="Name" variant="outlined"/>
           <TextField fullWidth label="Type" variant="outlined"/>
           <TextField fullWidth label="Original" variant="outlined"/>
-        </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={onClose}>Close</Button>

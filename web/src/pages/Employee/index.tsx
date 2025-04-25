@@ -1,9 +1,10 @@
-import {FTable} from '../../components'
+import { useState } from 'react';
+import {DialogContainer, FTable} from '../../components'
 import {Header, Employee} from '../../utils'
 import {Button} from "@mui/material";
 
 export default () => {
-
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
   const headers: Header[] = [
     {name: 'id', text: 'ID'},
     {name: 'name', text: 'Ten'},
@@ -18,11 +19,19 @@ export default () => {
     {id: 3, name: 'Son', age: 221, address: 'Quoc Oai 2 - Ha Noi'},
   ]
 
+  const onAdd = () => {
+    setIsOpenDialog(true)
+  }
+
   return (
     <>
       <h1>Employee</h1>
-      <Button variant="outlined">Add</Button>
+      <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable tableName={'employee hihi'} headers={headers} rows={employees}/>
+      <DialogContainer
+        isOpen={isOpenDialog}
+        onClose={() => setIsOpenDialog(false)}
+      />
     </>
   )
 }
