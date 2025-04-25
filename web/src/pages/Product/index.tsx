@@ -1,4 +1,4 @@
-import {FTable, DialogContainer} from '../../components'
+import {FTable, ProductDialog} from '../../components'
 import {Header, Product} from '../../utils'
 import {Button} from "@mui/material";
 import {useState} from "react";
@@ -31,7 +31,7 @@ export default () => {
         headers={headers}
         rows={products}
       />
-      <DialogContainer
+      <ProductDialog
         isOpen={isOpenDialog}
         onClose={() => setIsOpenDialog(false)}
       />

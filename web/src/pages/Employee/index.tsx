@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import {DialogContainer, FTable} from '../../components'
+import {EmployeeDialog, FTable} from '../../components'
 import {Header, Employee} from '../../utils'
-import {Button} from "@mui/material";
+import {Button} from "@mui/material"
 
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
+  const [curEmployee, setCurEmployee] = useState<Employee>({
+    id: null,
+    name: '',
+    age: 0,
+    address: ''
+  })
+
   const headers: Header[] = [
     {name: 'id', text: 'ID'},
     {name: 'name', text: 'Ten'},
@@ -13,14 +20,20 @@ export default () => {
     {name: 'action', text: ''}
   ]
 
-  const employees: Employee[] = [
+  const [employees, setEmployee] = useState<Employee[]>([
     {id: 1, name: 'Dung', age: 20, address: 'Thanh Oai - Ha Noi'},
     {id: 2, name: 'Trung', age: 22, address: 'Quoc Oai - Ha Noi'},
     {id: 3, name: 'Son', age: 221, address: 'Quoc Oai 2 - Ha Noi'},
-  ]
+  ])
 
   const onAdd = () => {
     setIsOpenDialog(true)
+  }
+
+  const onSave = () => {
+    setEmployee([...employees, curEmployee])
+    setIsOpenDialog(false)
+    // todo: call api and save
   }
 
   return (
@@ -28,7 +41,10 @@ export default () => {
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable tableName={'employee hihi'} headers={headers} rows={employees}/>
-      <DialogContainer
+      <EmployeeDialog
+        employee={curEmployee}
+        setEmployee={setCurEmployee}
+        onSave={onSave}
         isOpen={isOpenDialog}
         onClose={() => setIsOpenDialog(false)}
       />
