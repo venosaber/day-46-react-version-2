@@ -1,7 +1,20 @@
 import {FTable, ProductDialog} from '../../components'
-import {Header, Product} from '../../utils'
+import {Color, Header, Product} from '../../utils'
 import {Button} from "@mui/material";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import api from '../../plugins/api'
+
+const headers: Header[] = [
+  {name: 'id', text: 'ID'},
+  {name: 'code', text: 'Code'},
+  {name: 'name', text: 'Ten'},
+  {name: 'shortName', text: 'Ten Ngan'},
+  {name: 'expectedPrice', text: 'Gia De Xuat'},
+  {name: 'description', text: 'Mo Ta'},
+  {name: 'color', text: 'mau'},
+  {name: 'action', text: ''}
+]
+
 
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
@@ -15,29 +28,14 @@ export default () => {
     color: null
   })
 
-  const headers: Header[] = [
-    {name: 'id', text: 'ID'},
-    {name: 'code', text: 'Code'},
-    {name: 'name', text: 'Ten'},
-    {name: 'shortName', text: 'Ten Ngan'},
-    {name: 'expectedPrice', text: 'Gia De Xuat'},
-    {name: 'color', text: 'mau'},
-    {name: 'action', text: ''}
-  ]
-
-  const [products, setProducts] = useState<Product[]>([
-    {id: 1, code: 'F8-2020', name: 'Hoa Hong', shortName: 'HH', expectedPrice: 2000, color: 1, description: ''},
-    {id: 2, code: 'F8-2022', name: 'Hoa Hong', shortName: 'HH', expectedPrice: 2000, color: 1, description: ''},
-    {id: 3, code: 'F8-2023', name: 'Hoa Hong', shortName: 'HH', expectedPrice: 2000, color: 1, description: ''},
-    {id: 4, code: 'F8-2024', name: 'Hoa Hong', shortName: 'HH', expectedPrice: 2000, color: 1, description: ''},
-  ])
+  const [products, setProducts] = useState<Product[]>([])
+  // const [colors, setColors] = useState<Color[]>([])
 
   const onAdd = () => {
     setIsOpenDialog(true)
   }
 
   const onUpdate = (id: number) => {
-    console.log(id)
     // @ts-ignore
     setCurProduct({...products.find(e => e.id === id)})
     setIsOpenDialog(true)
@@ -49,6 +47,42 @@ export default () => {
     // todo: call api and save
   }
 
+  const groupData = (pros: Product[], colors: Color[]) => {
+    // hash table (color)
+    const colorObj = {}
+    colors.forEach((color: Color) => {
+      // @ts-ignore
+      colorObj[color.id] = color.name
+    })
+
+    // join to product
+    pros.forEach((pro: Product) => {
+      // @ts-ignore
+      pro.color = colorObj[pro.color]
+    })
+    setProducts([...pros])
+  }
+
+  const getData = async () => {
+    try {
+      const [productsData, colorsData] = await Promise.all([
+        api.get('/products/'),
+        api.get('/colors/'),
+      ])
+
+      // group data
+      groupData(productsData.data, colorsData.data)
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // onmounted
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <>
       <h1>Employee</h1>
@@ -58,6 +92,7 @@ export default () => {
         headers={headers}
         rows={products}
         onUpdate={onUpdate}
+        width={900}
       />
       <ProductDialog
         product={curProduct}

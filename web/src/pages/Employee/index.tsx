@@ -20,6 +20,9 @@ export default () => {
     {name: 'name', text: 'Ten'},
     {name: 'age', text: 'Tuoi'},
     {name: 'address', text: 'Dia Chi'},
+    {name: 'salary', text: 'Luong'},
+    {name: 'position', text: 'Vi tri'},
+    {name: 'status', text: 'Status'},
     {name: 'action', text: ''}
   ]
 
@@ -51,6 +54,7 @@ export default () => {
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable
+        width={800}
         tableName={'employee hihi'}
         headers={headers}
         rows={employees}

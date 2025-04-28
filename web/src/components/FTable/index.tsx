@@ -9,6 +9,7 @@ interface FTable {
   headers: Header[]
   rows: any[]
   onUpdate?: (id: number) => void
+  width: number
 }
 
 const RenderActionBtn = (
@@ -27,12 +28,12 @@ const RenderActionBtn = (
 }
 
 
-export default ({tableName, headers, rows, onUpdate}: FTable) => {
+export default ({tableName, headers, rows, onUpdate, width=650}: FTable) => {
 
   return (
     <>
       <h2>{tableName}</h2>
-      <TableContainer sx={{width: 650, margin: 'auto'}} component={Paper}>
+      <TableContainer sx={{width, margin: 'auto'}} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>

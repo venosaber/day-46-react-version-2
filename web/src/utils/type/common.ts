@@ -8,6 +8,8 @@ interface Master {
   name: string | null
 }
 
+export interface Color extends Master {}
+
 export interface Employee extends Master{
   age: number | null
   address: string | null
@@ -21,5 +23,5 @@ export interface Product extends Master {
   code: string | null
   expectedPrice: number | null
   description: string | null
-  color: number | null
+  color: number | string | null
 }

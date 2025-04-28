@@ -8,8 +8,8 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
     setEmployee({...employee, [event.target.name]: event.target.value})
   }
 
-  const positions: String[] = [
-    'Member', 'Accountant', 'Director'
+  const positions: string[] = [
+    'Sale', 'Hr', 'Warehouse', 'Accountant', 'Director'
   ]
 
   return (
@@ -35,8 +35,7 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
           value={'Member'}
           fullWidth options={positions}
           renderInput={(params) => <TextField {...params} label="Position" />}
-          onChange={(_: any, newValue: string) => {
-            console.log(_)
+          onChange={(_, newValue) => {
             setEmployee({...employee, position: newValue});
           }}
         />
