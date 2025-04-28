@@ -15,4 +15,5 @@ export interface EmployeeDialogProp extends DialogProp {
 
 export interface ProductDialogProp extends DialogProp {
   product: Product
+  setProduct: (product: Product) => void
 }

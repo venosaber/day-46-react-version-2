@@ -9,7 +9,10 @@ export default () => {
     id: null,
     name: '',
     age: 0,
-    address: ''
+    salary: 0,
+    address: '',
+    position: '',
+    status: ''
   })
 
   const headers: Header[] = [
@@ -20,10 +23,10 @@ export default () => {
     {name: 'action', text: ''}
   ]
 
-  const [employees, setEmployee] = useState<Employee[]>([
-    {id: 1, name: 'Dung', age: 20, address: 'Thanh Oai - Ha Noi'},
-    {id: 2, name: 'Trung', age: 22, address: 'Quoc Oai - Ha Noi'},
-    {id: 3, name: 'Son', age: 221, address: 'Quoc Oai 2 - Ha Noi'},
+  const [employees, setEmployees] = useState<Employee[]>([
+    {id: 1, name: 'Dung', age: 20, address: 'Thanh Oai - Ha Noi', salary: 2000, position: 'member', status: 'working'},
+    {id: 2, name: 'Trung', age: 22, address: 'Quoc Oai - Ha Noi', salary: 2000, position: 'member', status: 'working'},
+    {id: 3, name: 'Son', age: 221, address: 'Quoc Oai 2 - Ha Noi', salary: 2000, position: 'member', status: 'working'},
   ])
 
   const onAdd = () => {
@@ -38,7 +41,7 @@ export default () => {
   }
 
   const onSave = () => {
-    setEmployee([...employees, curEmployee])
+    setEmployees([...employees, curEmployee])
     setIsOpenDialog(false)
     // todo: call api and save
   }

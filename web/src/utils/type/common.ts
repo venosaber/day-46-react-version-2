@@ -11,9 +11,15 @@ interface Master {
 export interface Employee extends Master{
   age: number | null
   address: string | null
+  salary: number | null
+  position: string | null
+  status: string | null
 }
 
 export interface Product extends Master {
-  type: string | null
-  original: string | null
+  shortName: string | null
+  code: string | null
+  expectedPrice: number | null
+  description: string | null
+  color: number | null
 }

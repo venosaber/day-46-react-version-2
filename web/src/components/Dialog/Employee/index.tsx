@@ -1,5 +1,5 @@
 import {DialogContainer} from "../../index.ts";
-import {Stack, TextField} from "@mui/material";
+import {Autocomplete, Stack, TextField} from "@mui/material";
 import {EmployeeDialogProp} from "../../../utils";
 
 export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialogProp) => {
@@ -7,6 +7,10 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
   const onChange = (event: any) => {
     setEmployee({...employee, [event.target.name]: event.target.value})
   }
+
+  const positions: String[] = [
+    'Member', 'Accountant', 'Director'
+  ]
 
   return (
     <DialogContainer
@@ -23,6 +27,18 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
         />
         <TextField
           fullWidth name={'address'} label="Address" variant="outlined" value={employee.address} onChange={onChange}
+        />
+        <TextField
+          fullWidth name={'salary'} label="Salary" variant="outlined" value={employee.salary} onChange={onChange}
+        />
+        <Autocomplete
+          value={'Member'}
+          fullWidth options={positions}
+          renderInput={(params) => <TextField {...params} label="Position" />}
+          onChange={(_: any, newValue: string) => {
+            console.log(_)
+            setEmployee({...employee, position: newValue});
+          }}
         />
       </Stack>
     </DialogContainer>
