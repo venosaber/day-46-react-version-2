@@ -37,7 +37,6 @@ export default () => {
   }
 
   const onUpdate = (id: number) => {
-    console.log(id)
     // @ts-ignore
     setCurEmployee({...employees.find(e => e.id === id)})
     setIsOpenDialog(true)
