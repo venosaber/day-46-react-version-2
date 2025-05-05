@@ -3,9 +3,9 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "
 import {Header} from '../../utils'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import {memo} from 'react'
 
 interface FTable {
-  tableName: string
   headers: Header[]
   rows: any[]
   onUpdate?: (id: number) => void
@@ -28,11 +28,11 @@ const RenderActionBtn = (
 }
 
 
-export default ({tableName, headers, rows, onUpdate, width=650}: FTable) => {
+function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
+  console.log(1234567)
 
   return (
     <>
-      <h2>{tableName}</h2>
       <TableContainer sx={{width, margin: 'auto'}} component={Paper}>
         <Table>
           <TableHead>
@@ -71,3 +71,5 @@ export default ({tableName, headers, rows, onUpdate, width=650}: FTable) => {
     </>
   )
 }
+
+export default memo(FTableComponent)

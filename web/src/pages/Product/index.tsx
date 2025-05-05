@@ -89,7 +89,6 @@ export default () => {
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable
-        tableName={'employee hihi'}
         headers={headers}
         rows={products}
         onUpdate={onUpdate}

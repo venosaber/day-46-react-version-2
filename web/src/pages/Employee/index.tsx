@@ -3,6 +3,18 @@ import {EmployeeDialog, FTable,} from '../../components'
 import {Header, Employee} from '../../utils'
 import {Button} from "@mui/material"
 
+
+const headers: Header[] = [
+  {name: 'id', text: 'ID'},
+  {name: 'name', text: 'Ten'},
+  {name: 'age', text: 'Tuoi'},
+  {name: 'address', text: 'Dia Chi'},
+  {name: 'salary', text: 'Luong'},
+  {name: 'position', text: 'Vi tri'},
+  {name: 'status', text: 'Status'},
+  {name: 'action', text: ''}
+]
+
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
   const [curEmployee, setCurEmployee] = useState<Employee>({
@@ -14,17 +26,6 @@ export default () => {
     position: '',
     status: ''
   })
-
-  const headers: Header[] = [
-    {name: 'id', text: 'ID'},
-    {name: 'name', text: 'Ten'},
-    {name: 'age', text: 'Tuoi'},
-    {name: 'address', text: 'Dia Chi'},
-    {name: 'salary', text: 'Luong'},
-    {name: 'position', text: 'Vi tri'},
-    {name: 'status', text: 'Status'},
-    {name: 'action', text: ''}
-  ]
 
   const [employees, setEmployees] = useState<Employee[]>([
     {id: 1, name: 'Dung', age: 20, address: 'Thanh Oai - Ha Noi', salary: 2000, position: 'member', status: 'working'},
@@ -54,7 +55,6 @@ export default () => {
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable
         width={800}
-        tableName={'employee hihi'}
         headers={headers}
         rows={employees}
         onUpdate={onUpdate}
