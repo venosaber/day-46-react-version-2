@@ -1,4 +1,4 @@
-import {FTable, ProductDialog} from '../../components'
+import {FTable, FHeader, ProductDialog} from '../../components'
 import {Color, Header, Product} from '../../utils'
 import {Button} from "@mui/material";
 import {useState, useEffect} from "react";
@@ -85,6 +85,7 @@ export default () => {
 
   return (
     <>
+      <FHeader/>
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable

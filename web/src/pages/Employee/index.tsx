@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {EmployeeDialog, FTable} from '../../components'
+import {EmployeeDialog, FTable, FHeader} from '../../components'
 import {Header, Employee} from '../../utils'
 import {Button} from "@mui/material"
 
@@ -51,6 +51,7 @@ export default () => {
 
   return (
     <>
+      <FHeader/>
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable
