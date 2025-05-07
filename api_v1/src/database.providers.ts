@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import {ColorEntity} from "./color/entity";
 import {EmployeeEntity} from "./employee/entity";
+import {ProductEntity} from "./product/entity";
 
 export const databaseProviders = [
   {
@@ -14,7 +15,7 @@ export const databaseProviders = [
         password: 'postgres',
         database: 'default',
         entities: [
-          ColorEntity, EmployeeEntity
+          ColorEntity, EmployeeEntity, ProductEntity
         ],
         synchronize: false,
         logging: true,
