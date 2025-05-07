@@ -20,10 +20,10 @@ export abstract class BaseService {
     return query.orderBy(['id asc'])
   }
 
-  getList(condition: any = {active: true}) {
+  async getList(condition: any = {active: true}) {
     let query = this.handleSelect()
     query = this.handleFind(query, condition)
-    return query.getRawMany()
+    return (await query.getRawMany()).map(obj => obj);
   }
 
   async create(data: any) {

@@ -20,7 +20,16 @@ export class ProductService extends BaseService {
       .select([...this.columns])
   }
 
-  getList(condition: any = {active: true}) {
-    return super.getList(condition)
+  async getList(condition: any = {active: true}): Promise<any[]> {
+    let products = await super.getList(condition)
+
+    products = products.map(e => {
+      const result = {...e, shortName: e.short_name}
+      delete result.short_name
+      return result
+    })
+
+    console.log(products)
+    return products
   }
 }
