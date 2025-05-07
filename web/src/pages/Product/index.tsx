@@ -1,7 +1,7 @@
 import {FTable, FHeader, ProductDialog} from '../../components'
 import {Color, Header, Product} from '../../utils'
 import {Button} from "@mui/material";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import api from '../../plugins/api'
 
 const headers: Header[] = [
@@ -35,11 +35,15 @@ export default () => {
     setIsOpenDialog(true)
   }
 
-  const onUpdate = (id: number) => {
+  const onUpdate = useCallback((id: number) => {
     // @ts-ignore
     setCurProduct({...products.find(e => e.id === id)})
     setIsOpenDialog(true)
-  }
+  }, [products])
+
+  // const pros = useMemo(() => {
+  //   return []
+  // }, [])
 
   const onSave = () => {
     setProducts([...products, curProduct])

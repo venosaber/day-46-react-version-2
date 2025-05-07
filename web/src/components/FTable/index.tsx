@@ -31,6 +31,9 @@ const RenderActionBtn = (
 function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
   console.log(1234567)
 
+  // const rows = []
+  // const onUpdate = () => {}
+
   return (
     <>
       <TableContainer sx={{width, margin: 'auto'}} component={Paper}>
@@ -47,7 +50,7 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
 
           <TableBody>
             {
-              rows.map((row: any) => {
+              rows?.map((row: any) => {
                 // @ts-ignore
                 return (
                   <TableRow key={row.id}>
