@@ -1,6 +1,7 @@
 export interface Header {
   name: string
   text: string
+  displayProperty?: string
 }
 
 interface Master {
@@ -21,7 +22,6 @@ export interface Employee extends Master{
 export interface Product extends Master {
   shortName: string | null
   code: string | null
-  expectedPrice: number | null
   description: string | null
-  color: number | string | null
+  color: any
 }

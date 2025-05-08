@@ -2,16 +2,15 @@ import {FTable, FHeader, ProductDialog} from '../../components'
 import {Color, Header, Product} from '../../utils'
 import {Button} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
-import api from '../../plugins/api'
+import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
   {name: 'code', text: 'Code'},
   {name: 'name', text: 'Ten'},
-  {name: 'shortName', text: 'Ten Ngan'},
-  {name: 'expectedPrice', text: 'Gia De Xuat'},
+  {name: 'shortName', text: 'Ten Ngan'}, // bang
   {name: 'description', text: 'Mo Ta'},
-  {name: 'color', text: 'mau'},
+  {name: 'color', text: 'mau', displayProperty: 'name'}, // {id, name}
   {name: 'action', text: ''}
 ]
 
@@ -23,7 +22,7 @@ export default () => {
     code: '',
     name: '',
     shortName: '',
-    expectedPrice: 0,
+    // expectedPrice: 0,
     description: '',
     color: null
   })
@@ -45,10 +44,22 @@ export default () => {
   //   return []
   // }, [])
 
-  const onSave = () => {
+  const onSave = async () => {
     setProducts([...products, curProduct])
     setIsOpenDialog(false)
-    // todo: call api and save
+    // if id is not null -> update else -> create
+    if (curProduct.id) await putMethod(`/products/${curProduct.id}`, toBody())
+    else await postMethod(`/products`, toBody())
+  }
+
+  const toBody = () => {
+    return {
+      name: curProduct.name,
+      shortName: curProduct.shortName,
+      code: curProduct.code,
+      description: curProduct.description,
+      colorId: null
+    }
   }
 
   const groupData = (pros: Product[], colors: Color[]) => {
@@ -69,13 +80,13 @@ export default () => {
 
   const getData = async () => {
     try {
-      const [productsData, colorsData] = await Promise.all([
-        api.get('/products/'),
-        api.get('/colors/'),
-      ])
+      const colorsData = await getMethod('/colors')
+      const productsData = await getMethod('/products')
+      console.log(productsData)
 
+      setProducts([...productsData])
       // group data
-      groupData(productsData.data, colorsData.data)
+      // groupData(productsData, colorsData)
 
     } catch (e) {
       console.log(e)

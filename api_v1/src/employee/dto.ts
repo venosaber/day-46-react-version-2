@@ -38,7 +38,9 @@ export class CreateEmployeeDto {
   @IsOptional()
   address: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['saler', 'director', 'accountant']
+  })
   @IsString({
     message: 'position must be string',
   })

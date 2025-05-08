@@ -13,7 +13,7 @@ export abstract class BaseService {
   }
 
   handleSelect() {
-    return this.repository.createQueryBuilder()
+    return this.repository.createQueryBuilder().select(this.columns)
   }
 
   handleOrder(query) {
