@@ -1,5 +1,5 @@
 import {FHeader} from "../../components";
-import { Autocomplete, Grid, TextField } from '@mui/material'
+import {Autocomplete, Button, Grid, TextField} from '@mui/material'
 import {useEffect, useState} from "react";
 import dayjs from 'dayjs';
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
@@ -15,16 +15,66 @@ const customers = [
   { id: 5, name: 'Dung', address: 'QUoc Oai - Ha Noi' },
 ]
 
+const OrderDetailComponent = () => {
+  return (
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <Autocomplete
+          fullWidth={true}
+          disablePortal
+          options={[]}
+          getOptionLabel={(option: any) => option.name}
+          getOptionKey={(option) => option.id}
+          renderInput={
+            (params) => <TextField {...params} label="Product Name" value={''} />
+          }
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <TextField
+          fullWidth
+          label="Price"
+          variant="outlined"
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <TextField
+          fullWidth
+          label="Quantity"
+          variant="outlined"
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <TextField
+          fullWidth
+          label="Amount"
+          variant="outlined"
+        />
+      </Grid>
+    </Grid>
+  )
+}
+
 export default function() {
-  const [inputValue, setInputValue] = useState('');
+  const emptyDetail = { id: null, productsId: '', price: '', quantity: '', amount: '' }
+
   const [order, setOrder] = useState({
     id: null,
     customer: {
       id: null, name: ''
     },
     deliveryAddress: '',
-    saleDate: '2025-05-10'
+    saleDate: '2025-05-10',
+    details: [
+      { ...emptyDetail }
+    ]
   })
+
+  const onAddNewDetail = () => {
+    const details = order.details
+    details.push({...emptyDetail})
+    setOrder({...order, details})
+  }
 
   useEffect(() => {
     console.log(order)
@@ -33,9 +83,10 @@ export default function() {
   return (
     <>
       <FHeader/>
-      <Box sx={{maxWidth: 1200, margin: 'auto'}}>
+      <Box sx={{maxWidth: 1200, margin: 'auto'}} padding={2}>
+        <h2 style={{padding: '10px'}}>New Order</h2>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Grid container spacing={2} padding={2}>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 4 }}>
               <Autocomplete
                 fullWidth={true}
@@ -43,9 +94,8 @@ export default function() {
                 options={customers}
                 getOptionLabel={(option: any) => option.name}
                 getOptionKey={(option) => option.id}
-                sx={{ width: 300 }}
                 renderInput={
-                  (params) => <TextField {...params} fullWidth label="Customer Name" value={order.customer?.name} />
+                  (params) => <TextField {...params} label="Customer Name" value={order.customer?.name} />
                 }
                 onChange={(event, newValue) => {
                   setOrder({...order, customer: newValue, deliveryAddress: newValue?.address})
@@ -63,12 +113,21 @@ export default function() {
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
               <DesktopDatePicker
+                sx={{width: '100%'}}
                 defaultValue={dayjs(order.saleDate)}
                 onChange={(value) => setOrder({...order, saleDate: value.format('YYYY-MM-DD')})}
               />
             </Grid>
           </Grid>
         </LocalizationProvider>
+
+        <h2 style={{padding: '10px'}}>Order Details</h2>
+        <Button onClick={onAddNewDetail}>Add new detail</Button>
+        {
+          order.details.map((detail, index) => {
+            return <OrderDetailComponent/>
+          })
+        }
       </Box>
     </>
   )
