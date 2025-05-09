@@ -34,6 +34,7 @@ export abstract class BaseService {
       .returning(this.columns.join(', '))
       .execute()
 
+    if (data.length > 1) return newData.raw
     return newData.raw[0]
   }
 

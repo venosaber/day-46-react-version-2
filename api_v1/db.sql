@@ -52,4 +52,41 @@ CREATE TABLE product
     CONSTRAINT product_pkey PRIMARY KEY (id)
 );
 
+DROP TABLE IF EXISTS "order" CASCADE;
+CREATE TABLE "order"
+(
+    id  bigserial NOT NULL,
+    employee_id bigint,
+    total_amount int,
+    delivery_address text,
+    payment_status text,
+    comment text,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    created_by bigint,
+    modified_at timestamp with time zone,
+    modified_by bigint,
+    deleted_at timestamp with time zone,
+    deleted_by bigint,
+    active boolean DEFAULT TRUE,
+    CONSTRAINT product_order PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS "order_detail" CASCADE;
+CREATE TABLE "order_detail"
+(
+    id  bigserial NOT NULL,
+    order_id bigint,
+    product_id bigint,
+    price int,
+    quantity int,
+    amount int,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    created_by bigint,
+    modified_at timestamp with time zone,
+    modified_by bigint,
+    deleted_at timestamp with time zone,
+    deleted_by bigint,
+    active boolean DEFAULT TRUE,
+    CONSTRAINT product_order_detail PRIMARY KEY (id)
+);
 
