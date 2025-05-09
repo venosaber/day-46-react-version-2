@@ -8,7 +8,7 @@ export class OrderController {
 
   @Get('/')
   get() {
-    return this.orderService.getList();
+    return this.orderService.getOrders();
   }
 
   @Post('')

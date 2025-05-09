@@ -6,7 +6,7 @@ import { OrderController } from "./controller";
 import {OrderDetailModule} from "../orderDetail/module";
 
 @Module({
-  imports: [DatabaseModule, OrderDetailModule],
+  imports: [DatabaseModule, DatabaseModule, OrderDetailModule],
   providers: [
     ...orderProviders,
     OrderService,
