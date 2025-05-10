@@ -6,7 +6,7 @@ import { BaseService } from "../base/service";
 @Injectable()
 export class CustomerService extends BaseService {
 
-  columns: string[] = ['id', 'name', 'company_name', 'description']
+  columns: string[] = ['id', 'name', 'company_name', 'address', 'description']
 
   constructor(
     @Inject('CUSTOMER_REPOSITORY')
@@ -20,6 +20,7 @@ export class CustomerService extends BaseService {
       .select([
         'customer.id as id',
         'customer.name as name',
+        'customer.address as address',
         'customer.company_name as "companyName"',
         'customer.description as description',
       ])

@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { BaseEntity } from './entity'
 import {NotFoundException} from "@nestjs/common";
+import { toCamelCase } from "../utils";
 
 export abstract class BaseService {
   abstract columns: string[]
@@ -34,8 +35,8 @@ export abstract class BaseService {
       .returning(this.columns.join(', '))
       .execute()
 
-    if (data.length > 1) return newData.raw
-    return newData.raw[0]
+    if (data.length > 1) return toCamelCase(newData.raw)
+    return toCamelCase(newData.raw[0])
   }
 
   async updateOne(id: number, data: any) {
@@ -50,7 +51,7 @@ export abstract class BaseService {
       throw new NotFoundException(`Color with id ${id} not found`);
     }
 
-    return newData.raw[0]
+    return toCamelCase(newData.raw[0])
   }
 
   softDelete(id: number) {

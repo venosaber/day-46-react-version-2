@@ -28,6 +28,16 @@ export class CreateCustomerDto {
     nullable: true
   })
   @IsString({
+    message: 'address must be string'
+  })
+  @IsOptional()
+  address: string;
+
+  @ApiProperty({
+    type: 'string',
+    nullable: true
+  })
+  @IsString({
     message: 'description must be string'
   })
   @IsOptional()
