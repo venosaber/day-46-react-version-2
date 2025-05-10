@@ -1,6 +1,6 @@
-import {FTable, FHeader, CustomerDialog} from '../../components'
+import {FTable, FHeader, CustomerDialog, SearchBar} from '../../components'
 import {Customer, Header} from '../../utils'
-import {Button} from "@mui/material";
+import {Box} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
 
@@ -75,21 +75,23 @@ export default () => {
   return (
     <>
       <FHeader/>
-      <h1>Customers</h1>
-      <Button variant="outlined" onClick={onAdd}>Add</Button>
-      <FTable
-        headers={headers}
-        rows={customers}
-        onUpdate={onUpdate}
-        width={900}
-      />
-      <CustomerDialog
-        customer={curCustomer}
-        setCustomer={setCurCustomer}
-        onSave={onSave}
-        isOpen={isOpenDialog}
-        onClose={() => setIsOpenDialog(false)}
-      />
+      <Box className={'container'}>
+        <h1>Customers</h1>
+        <SearchBar onAdd={onAdd}/>
+
+        <FTable
+          headers={headers}
+          rows={customers}
+          onUpdate={onUpdate}
+        />
+        <CustomerDialog
+          customer={curCustomer}
+          setCustomer={setCurCustomer}
+          onSave={onSave}
+          isOpen={isOpenDialog}
+          onClose={() => setIsOpenDialog(false)}
+        />
+      </Box>
     </>
   )
 }

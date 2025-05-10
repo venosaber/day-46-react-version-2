@@ -16,7 +16,7 @@ export default ({isOpen, onClose, color, setColor, onSave}: ColorDialogProp) => 
     >
       <Stack sx={{ width: 450 }} spacing={2}>
         <TextField
-          fullWidth name={'name'} label="Name" variant="outlined" value={color.name} onChange={onChange}
+          fullWidth name={'name'} label="Name" variant="standard" value={color.name} onChange={onChange}
         />
       </Stack>
     </DialogContainer>

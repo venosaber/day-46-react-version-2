@@ -16,16 +16,16 @@ export default ({isOpen, onClose, product, setProduct, onSave}: ProductDialogPro
     >
       <Stack sx={{ width: 450 }} spacing={2}>
         <TextField
-          fullWidth name={"code"} label="Code" variant="outlined" value={product.code} onChange={onChange}
+          fullWidth name={"code"} label="Code" variant="standard" value={product.code} onChange={onChange}
         />
         <TextField
-          fullWidth name={"name"} label="Name" variant="outlined" value={product.name} onChange={onChange}
+          fullWidth name={"name"} label="Name" variant="standard" value={product.name} onChange={onChange}
         />
         <TextField
-          fullWidth name={"shortName"} label="Short Name" variant="outlined" value={product.shortName} onChange={onChange}
+          fullWidth name={"shortName"} label="Short Name" variant="standard" value={product.shortName} onChange={onChange}
         />
         <TextField
-          fullWidth name={"description"} label="description" variant="outlined" value={product.description} onChange={onChange}
+          fullWidth name={"description"} label="description" variant="standard" value={product.description} onChange={onChange}
         />
 
       </Stack>

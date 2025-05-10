@@ -1,6 +1,6 @@
-import {FTable, FHeader, ColorDialog} from '../../components'
+import {FTable, FHeader, ColorDialog, SearchBar} from '../../components'
 import {Color, Header} from '../../utils'
-import {Button} from "@mui/material";
+import {Box} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
 
@@ -30,7 +30,6 @@ export default () => {
   }, [colors])
 
   const onSave = async () => {
-    console.log(curColor)
     setIsOpenDialog(false)
 
     if (curColor.id) {
@@ -65,21 +64,23 @@ export default () => {
   return (
     <>
       <FHeader/>
-      <h1>Colors</h1>
-      <Button variant="outlined" onClick={onAdd}>Add</Button>
-      <FTable
-        headers={headers}
-        rows={colors}
-        onUpdate={onUpdate}
-        width={900}
-      />
-      <ColorDialog
-        color={curColor}
-        setColor={setCurColor}
-        onSave={onSave}
-        isOpen={isOpenDialog}
-        onClose={() => setIsOpenDialog(false)}
-      />
+      <Box sx={{maxWidth: 500, margin: 'auto'}}>
+        <h1>Colors</h1>
+        <SearchBar onAdd={onAdd}/>
+
+        <FTable
+          headers={headers}
+          rows={colors}
+          onUpdate={onUpdate}
+        />
+        <ColorDialog
+          color={curColor}
+          setColor={setCurColor}
+          onSave={onSave}
+          isOpen={isOpenDialog}
+          onClose={() => setIsOpenDialog(false)}
+        />
+      </Box>
     </>
   )
 }

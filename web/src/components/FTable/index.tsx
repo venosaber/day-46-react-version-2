@@ -9,7 +9,7 @@ interface FTable {
   headers: Header[]
   rows: any[]
   onUpdate?: (id: number) => void
-  width: number
+  width?: number
 }
 
 const RenderActionBtn = (
@@ -21,7 +21,7 @@ const RenderActionBtn = (
   if (!keys.includes('action')) return
 
   return (
-    <TableCell key={`action-${rowId}`}>
+    <TableCell size={"small"} key={`action-${rowId}`}>
       <EditIcon color={'success'} onClick={onUpdate}/>
       <DeleteOutlineIcon color={'error'} />
     </TableCell>
@@ -29,7 +29,7 @@ const RenderActionBtn = (
 }
 
 
-function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
+function FTableComponent({headers, rows, onUpdate, width}: FTable) {
   console.log(1234567)
 
   // const rows = []
@@ -37,13 +37,13 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
 
   return (
     <>
-      <TableContainer sx={{width, margin: 'auto'}} component={Paper}>
+      <TableContainer sx={{maxWidth: width, margin: 'auto'}} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               {
                 headers.map((header: Header) => {
-                  return <TableCell key={header.name}>{header.text}</TableCell>
+                  return <TableCell size={"small"} key={header.name}>{header.text}</TableCell>
                 })
               }
             </TableRow>
@@ -65,7 +65,7 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
                         const rowKey: string = header.name
                         // const header = headers.find(h => h.name === rowKey)
                         return (
-                          <TableCell key={`${rowKey}-${row.id}`}>
+                          <TableCell size={"small"} key={`${rowKey}-${row.id}`}>
                             {
                               row[rowKey]
                                 ? header?.displayProperty ? row[rowKey][header.displayProperty] : row[rowKey]

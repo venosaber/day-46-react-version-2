@@ -20,21 +20,21 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
     >
       <Stack sx={{ width: 450 }} spacing={2}>
         <TextField
-          fullWidth name={'name'} label="Name" variant="outlined" value={employee.name} onChange={onChange}
+          fullWidth name={'name'} label="Name" variant="standard" value={employee.name} onChange={onChange}
         />
         <TextField
-          fullWidth name={'age'} label="Age" variant="outlined" value={employee.age} onChange={onChange}
+          fullWidth name={'age'} label="Age" variant="standard" value={employee.age} onChange={onChange}
         />
         <TextField
-          fullWidth name={'address'} label="Address" variant="outlined" value={employee.address} onChange={onChange}
+          fullWidth name={'address'} label="Address" variant="standard" value={employee.address} onChange={onChange}
         />
         <TextField
-          fullWidth name={'salary'} label="Salary" variant="outlined" value={employee.salary} onChange={onChange}
+          fullWidth name={'salary'} label="Salary" variant="standard" value={employee.salary} onChange={onChange}
         />
         <Autocomplete
           value={'Member'}
           fullWidth options={positions}
-          renderInput={(params) => <TextField {...params} label="Position" />}
+          renderInput={(params) => <TextField {...params} variant={"standard"} label="Position" />}
           onChange={(_, newValue) => {
             setEmployee({...employee, position: newValue});
           }}

@@ -1,6 +1,6 @@
-import {FTable, FHeader, ProductDialog} from '../../components'
+import {FTable, FHeader, ProductDialog, SearchBar} from '../../components'
 import {Color, Employee, Header, Product} from '../../utils'
-import {Button} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
 
@@ -81,21 +81,23 @@ export default () => {
   return (
     <>
       <FHeader/>
-      <h1>Employee</h1>
-      <Button variant="outlined" onClick={onAdd}>Add</Button>
-      <FTable
-        headers={headers}
-        rows={products}
-        onUpdate={onUpdate}
-        width={900}
-      />
-      <ProductDialog
-        product={curProduct}
-        setProduct={setCurProduct}
-        onSave={onSave}
-        isOpen={isOpenDialog}
-        onClose={() => setIsOpenDialog(false)}
-      />
+      <Box className={'container'}>
+        <h1>Products</h1>
+        <SearchBar onAdd={onAdd}/>
+
+        <FTable
+          headers={headers}
+          rows={products}
+          onUpdate={onUpdate}
+        />
+        <ProductDialog
+          product={curProduct}
+          setProduct={setCurProduct}
+          onSave={onSave}
+          isOpen={isOpenDialog}
+          onClose={() => setIsOpenDialog(false)}
+        />
+      </Box>
     </>
   )
 }

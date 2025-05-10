@@ -19,7 +19,7 @@ export default ({isOpen, onClose, customer, setCustomer, onSave}: CustomerDialog
           fullWidth
           name={'name'}
           label="Name"
-          variant="outlined"
+          variant="standard"
           value={customer.name}
           onChange={onChange}
         />
@@ -27,7 +27,7 @@ export default ({isOpen, onClose, customer, setCustomer, onSave}: CustomerDialog
           fullWidth
           name={'companyName'}
           label="Company Name"
-          variant="outlined"
+          variant="standard"
           value={customer.companyName}
           onChange={onChange}
         />
@@ -35,7 +35,7 @@ export default ({isOpen, onClose, customer, setCustomer, onSave}: CustomerDialog
           fullWidth
           name={'address'}
           label="Address"
-          variant="outlined"
+          variant="standard"
           value={customer.address}
           onChange={onChange}
         />
@@ -43,7 +43,7 @@ export default ({isOpen, onClose, customer, setCustomer, onSave}: CustomerDialog
           fullWidth
           name={'description'}
           label="Description"
-          variant="outlined"
+          variant="standard"
           value={customer.description}
           onChange={onChange}
         />
