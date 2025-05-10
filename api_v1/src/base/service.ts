@@ -18,12 +18,14 @@ export abstract class BaseService {
   }
 
   handleOrder(query) {
-    return query.orderBy(['id asc'])
+    query.orderBy({'id': 'asc'})
+    return query
   }
 
   async getList(condition: any = {active: true}) {
     let query = this.handleSelect()
     query = this.handleFind(query, condition)
+    query = this.handleOrder(query)
     return (await query.getRawMany()).map(obj => obj);
   }
 
