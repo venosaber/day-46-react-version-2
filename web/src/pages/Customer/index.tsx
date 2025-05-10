@@ -76,7 +76,6 @@ export default () => {
     <>
       <FHeader/>
       <Box className={'container'}>
-        <h1>Customers</h1>
         <SearchBar onAdd={onAdd}/>
 
         <FTable

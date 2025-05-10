@@ -65,7 +65,6 @@ export default () => {
     <>
       <FHeader/>
       <Box sx={{maxWidth: 500, margin: 'auto'}}>
-        <h1>Colors</h1>
         <SearchBar onAdd={onAdd}/>
 
         <FTable

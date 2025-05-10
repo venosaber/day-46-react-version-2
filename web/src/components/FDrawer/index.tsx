@@ -1,11 +1,13 @@
 import {Collapse, Drawer, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader} from "@mui/material";
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-// import StarBorder from '@mui/icons-material/StarBorder';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import HorizontalSplitOutlinedIcon from '@mui/icons-material/HorizontalSplitOutlined';
+import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+
 import {useState} from "react";
 import './style.css'
 import { useNavigate } from "react-router";
@@ -59,27 +61,27 @@ export default function ({isOpen, setIsOpen}: FDrawer) {
             <List component="div" disablePadding>
               <ListItemButton  sx={{ pl: 4 }} onClick={() => goTo('/employee/')}>
                 <ListItemIcon>
-                  <SendIcon />
+                  <PeopleAltOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Employees" />
               </ListItemButton>
               <ListItemButton  sx={{ pl: 4 }} onClick={() => goTo('/product/')}>
                 <ListItemIcon>
-                  <DraftsIcon />
+                  <HorizontalSplitOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Products" />
               </ListItemButton>
 
               <ListItemButton  sx={{ pl: 4 }} onClick={() => goTo('/color/')}>
                 <ListItemIcon>
-                  <DraftsIcon />
+                  <ColorLensOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Color" />
               </ListItemButton>
 
               <ListItemButton  sx={{ pl: 4 }} onClick={() => goTo('/customer/')}>
                 <ListItemIcon>
-                  <DraftsIcon />
+                  <GroupOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Customer" />
               </ListItemButton>

@@ -9,7 +9,7 @@ interface SearchBarI {
 
 export default function ({onAdd}: SearchBarI) {
   return (
-    <Box sx={{display: 'flex', marginBottom: 5}}>
+    <Box sx={{display: 'flex', marginBottom: 5, marginTop: 5}}>
       <TextField
         sx={{flexGrow: 1, marginRight: 1}}
         size={"small"}

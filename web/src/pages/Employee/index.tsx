@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {EmployeeDialog, FHeader, FTable, SearchBar,} from '../../components'
 import {Header, Employee, postMethod, getMethod, putMethod} from '../../utils'
-import {Box, Button} from "@mui/material"
+import {Box} from "@mui/material"
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -82,9 +82,8 @@ export default () => {
     <>
       <FHeader/>
       <Box className={'container'}>
-        <SearchBar/>
-        <h1>Employee</h1>
-        <Button variant="outlined" onClick={onAdd}>Add</Button>
+        <SearchBar onAdd={onAdd}/>
+
         <FTable
           headers={headers}
           rows={employees}
