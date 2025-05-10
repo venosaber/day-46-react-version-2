@@ -4,6 +4,7 @@ import {EmployeeEntity} from "./employee/entity";
 import {ProductEntity} from "./product/entity";
 import {OrderEntity} from "./order/entity";
 import {OrderDetailEntity} from "./orderDetail/entity";
+import {CustomerEntity} from "./customer/entity";
 
 export const databaseProviders = [
   {
@@ -17,7 +18,7 @@ export const databaseProviders = [
         password: 'postgres',
         database: 'default',
         entities: [
-          ColorEntity, EmployeeEntity, ProductEntity, OrderEntity, OrderDetailEntity
+          ColorEntity, EmployeeEntity, ProductEntity, OrderEntity, OrderDetailEntity, CustomerEntity
         ],
         synchronize: false,
         logging: true,

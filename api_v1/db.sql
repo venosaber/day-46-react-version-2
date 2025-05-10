@@ -90,3 +90,21 @@ CREATE TABLE "order_detail"
     CONSTRAINT product_order_detail PRIMARY KEY (id)
 );
 
+DROP TABLE IF EXISTS "customer" CASCADE;
+CREATE TABLE "customer"
+(
+    id  bigserial NOT NULL,
+    name text,
+    company_name text,
+    address text,
+    description text,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    created_by bigint,
+    modified_at timestamp with time zone,
+    modified_by bigint,
+    deleted_at timestamp with time zone,
+    deleted_by bigint,
+    active boolean DEFAULT TRUE,
+    CONSTRAINT product_customer PRIMARY KEY (id)
+);
+

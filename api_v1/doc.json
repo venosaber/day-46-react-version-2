@@ -284,6 +284,96 @@
           "Product"
         ]
       }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "OrderController_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ]
+      },
+      "post": {
+        "operationId": "OrderController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ]
+      }
+    },
+    "/orders/{id}": {
+      "put": {
+        "operationId": "OrderController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ]
+      },
+      "delete": {
+        "operationId": "OrderController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ]
+      }
     }
   },
   "info": {
@@ -447,6 +537,100 @@
           "code",
           "description",
           "colorId"
+        ]
+      },
+      "CreateOrderDetailDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "nullable": false
+          },
+          "price": {
+            "type": "integer",
+            "nullable": false
+          },
+          "quantity": {
+            "type": "integer",
+            "nullable": false
+          }
+        },
+        "required": [
+          "productId",
+          "price",
+          "quantity"
+        ]
+      },
+      "CreateOrderDto": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer",
+            "nullable": false
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateOrderDetailDto",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "employeeId",
+          "comment",
+          "details"
+        ]
+      },
+      "UpdateOrderDetailDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "nullable": false
+          },
+          "price": {
+            "type": "integer",
+            "nullable": false
+          },
+          "quantity": {
+            "type": "integer",
+            "nullable": false
+          }
+        },
+        "required": [
+          "productId",
+          "price",
+          "quantity"
+        ]
+      },
+      "UpdateOrderDto": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer",
+            "nullable": false
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateOrderDetailDto",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "employeeId",
+          "comment",
+          "details"
         ]
       }
     }

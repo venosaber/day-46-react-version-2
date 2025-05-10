@@ -24,23 +24,14 @@ export class ProductService extends BaseService {
         'product.short_name as shortName',
         'product.code as code',
         'product.description as description',
-        "json_build_object('id', color.id, 'name', color.name) as color"
+        `case 
+          when color.id is not null 
+            then json_build_object('id', color.id, 'name', color.name) 
+            else null 
+          end as color`
       ])
-      .innerJoin(
+      .leftJoin(
         ColorEntity, 'color', 'color.id = product.colorId'
       )
-  }
-
-  async getList(condition: any = {active: true}): Promise<any[]> {
-    let products = await super.getList(condition)
-    console.log(products)
-    products = products.map(e => {
-      const result = {...e, shortName: e.short_name}
-      delete result.short_name
-      return result
-    })
-
-    console.log(products)
-    return products
   }
 }

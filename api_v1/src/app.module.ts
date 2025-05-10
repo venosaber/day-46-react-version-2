@@ -5,9 +5,10 @@ import {ColorModule} from "./color/module";
 import {EmployeeModule} from "./employee/module";
 import {ProductModule} from "./product/module";
 import {OrderModule} from "./order/module";
+import {CustomerModule} from "./customer/module";
 
 @Module({
-  imports: [ColorModule, EmployeeModule, ProductModule, OrderModule],
+  imports: [ColorModule, EmployeeModule, ProductModule, OrderModule, CustomerModule],
   controllers: [AppController],
   providers: [AppService],
 })
