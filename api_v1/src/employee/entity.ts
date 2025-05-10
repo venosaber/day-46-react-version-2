@@ -10,6 +10,9 @@ export class EmployeeEntity extends BaseEntity {
   age: number
 
   @Column()
+  address: string
+
+  @Column()
   salary: number
 
   @Column()

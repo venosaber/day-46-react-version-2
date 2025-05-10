@@ -46,7 +46,6 @@ export abstract class BaseService {
       .where("id = :id", { id })
       .returning(this.columns.join(', '))
       .execute()
-
     if (newData.affected === 0) {
       throw new NotFoundException(`Color with id ${id} not found`);
     }

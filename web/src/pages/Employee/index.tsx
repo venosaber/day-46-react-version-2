@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import {EmployeeDialog, FTable,} from '../../components'
-import {Header, Employee} from '../../utils'
+import {useEffect, useState} from 'react';
+import {EmployeeDialog, FHeader, FTable,} from '../../components'
+import {Header, Employee, postMethod, getMethod, putMethod} from '../../utils'
 import {Button} from "@mui/material"
-
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -27,11 +26,7 @@ export default () => {
     status: ''
   })
 
-  const [employees, setEmployees] = useState<Employee[]>([
-    {id: 1, name: 'Dung', age: 20, address: 'Thanh Oai - Ha Noi', salary: 2000, position: 'member', status: 'working'},
-    {id: 2, name: 'Trung', age: 22, address: 'Quoc Oai - Ha Noi', salary: 2000, position: 'member', status: 'working'},
-    {id: 3, name: 'Son', age: 221, address: 'Quoc Oai 2 - Ha Noi', salary: 2000, position: 'member', status: 'working'},
-  ])
+  const [employees, setEmployees] = useState<Employee[]>([])
 
   const onAdd = () => {
     setIsOpenDialog(true)
@@ -43,14 +38,49 @@ export default () => {
     setIsOpenDialog(true)
   }
 
-  const onSave = () => {
-    setEmployees([...employees, curEmployee])
+  const onSave = async () => {
+    // setEmployees([...employees, curEmployee])
     setIsOpenDialog(false)
     // todo: call api and save
+    console.log("curEmployee", curEmployee)
+
+    if (curEmployee.id) {
+      const newEmployee: Employee = await putMethod(`/employee/${curEmployee.id}`, toBody())
+      const updateEmployeeIndex = employees.findIndex(
+        (e: Employee) => Number(e.id) === Number(curEmployee.id)
+      )
+      employees[updateEmployeeIndex] = newEmployee
+      console.log(employees, updateEmployeeIndex)
+      setEmployees([...employees])
+    }
+    else {
+      const newEmployee: Employee = await postMethod('/employee', toBody())
+      setEmployees([...employees, newEmployee])
+    }
+    // update employees variable
+    // setEmployees([...employees, newEmployee])
   }
+
+  const toBody = () => {
+    return {
+      ...curEmployee,
+      age: Number(curEmployee.age),
+      salary: Number(curEmployee.salary)
+    }
+  }
+
+  const onMounted = async () => {
+    const employeesData: Employee[] = await getMethod('/employee')
+    setEmployees(employeesData)
+  }
+
+  useEffect(() => {
+    onMounted()
+  }, [])
 
   return (
     <>
+      <FHeader/>
       <h1>Employee</h1>
       <Button variant="outlined" onClick={onAdd}>Add</Button>
       <FTable

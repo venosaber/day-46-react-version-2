@@ -14,13 +14,14 @@ interface FTable {
 
 const RenderActionBtn = (
   headers: Header[],
+  rowId: number,
   onUpdate: () => void
 ) => {
   const keys = headers.map(header => header.name)
   if (!keys.includes('action')) return
 
   return (
-    <TableCell>
+    <TableCell key={`action-${rowId}`}>
       <EditIcon color={'success'} onClick={onUpdate}/>
       <DeleteOutlineIcon color={'error'} />
     </TableCell>
@@ -55,8 +56,14 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
                 return (
                   <TableRow key={row.id}>
                     {
-                      Object.keys(row).map((rowKey: string) => {
-                        const header = headers.find(h => h.name === rowKey)
+                      headers.map((header: Header) => {
+                        if (header.name === 'action') {
+                          // @ts-ignore
+                          return RenderActionBtn(headers, row.id, () => onUpdate(row.id))
+                        }
+
+                        const rowKey: string = header.name
+                        // const header = headers.find(h => h.name === rowKey)
                         return (
                           <TableCell key={`${rowKey}-${row.id}`}>
                             {
@@ -67,10 +74,6 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
                           </TableCell>
                         )
                       })
-                    }
-                    {
-                      // @ts-ignore
-                      RenderActionBtn(headers, () => onUpdate(row.id))
                     }
                   </TableRow>
                 )

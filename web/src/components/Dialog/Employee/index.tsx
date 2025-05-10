@@ -9,7 +9,7 @@ export default ({isOpen, onClose, employee, setEmployee, onSave}: EmployeeDialog
   }
 
   const positions: string[] = [
-    'Sale', 'Hr', 'Warehouse', 'Accountant', 'Director'
+    'saler', 'accountant', 'director'
   ]
 
   return (
