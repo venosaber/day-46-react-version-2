@@ -57,7 +57,15 @@ function FTableComponent({headers, rows, onUpdate, width=650}: FTable) {
                     {
                       Object.keys(row).map((rowKey: string) => {
                         const header = headers.find(h => h.name === rowKey)
-                        return <TableCell key={`${rowKey}-${row.id}`}>{header?.displayProperty ? row[rowKey][header.displayProperty] : row[rowKey]}</TableCell>
+                        return (
+                          <TableCell key={`${rowKey}-${row.id}`}>
+                            {
+                              row[rowKey]
+                                ? header?.displayProperty ? row[rowKey][header.displayProperty] : row[rowKey]
+                                : ''
+                            }
+                          </TableCell>
+                        )
                       })
                     }
                     {

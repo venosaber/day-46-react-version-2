@@ -18,17 +18,16 @@ const headers: Header[] = [
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
   const [curProduct, setCurProduct] = useState<Product>({
-    id: null,
+    id: 0,
     code: '',
     name: '',
     shortName: '',
-    // expectedPrice: 0,
     description: '',
     color: null
   })
 
   const [products, setProducts] = useState<Product[]>([])
-  // const [colors, setColors] = useState<Color[]>([])
+  const [colors, setColors] = useState<Color[]>([])
 
   const onAdd = () => {
     setIsOpenDialog(true)
@@ -62,35 +61,11 @@ export default () => {
     }
   }
 
-  const groupData = (pros: Product[], colors: Color[]) => {
-    // hash table (color)
-    const colorObj = {}
-    colors.forEach((color: Color) => {
-      // @ts-ignore
-      colorObj[color.id] = color.name
-    })
-
-    // join to product
-    pros.forEach((pro: Product) => {
-      // @ts-ignore
-      pro.color = colorObj[pro.color]
-    })
-    setProducts([...pros])
-  }
-
   const getData = async () => {
-    try {
-      const colorsData = await getMethod('/colors')
-      const productsData = await getMethod('/products')
-      console.log(productsData)
+    const [colorData, productsData] = await Promise.all([getMethod('/colors'), getMethod('/products')])
 
-      setProducts([...productsData])
-      // group data
-      // groupData(productsData, colorsData)
-
-    } catch (e) {
-      console.log(e)
-    }
+    setProducts([...productsData])
+    setColors([...colorData])
   }
 
   // onmounted

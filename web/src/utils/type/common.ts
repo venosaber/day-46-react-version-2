@@ -5,8 +5,8 @@ export interface Header {
 }
 
 interface Master {
-  id: number | null
-  name: string | null
+  id?: number
+  name: string
 }
 
 export interface Color extends Master {}
@@ -20,8 +20,8 @@ export interface Employee extends Master{
 }
 
 export interface Product extends Master {
-  shortName: string | null
-  code: string | null
+  shortName: string
+  code: string
   description: string | null
-  color: any
+  color: Color | null
 }

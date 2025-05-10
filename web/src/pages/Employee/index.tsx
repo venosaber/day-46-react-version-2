@@ -18,7 +18,7 @@ const headers: Header[] = [
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
   const [curEmployee, setCurEmployee] = useState<Employee>({
-    id: null,
+    id: 0,
     name: '',
     age: 0,
     salary: 0,
