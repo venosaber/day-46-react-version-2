@@ -25,3 +25,9 @@ export interface Product extends Master {
   description: string | null
   color: Color | null
 }
+
+export interface Customer extends Master {
+  companyName: string | null
+  address: string | null
+  description: string | null
+}

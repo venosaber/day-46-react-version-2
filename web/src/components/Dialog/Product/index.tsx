@@ -25,9 +25,6 @@ export default ({isOpen, onClose, product, setProduct, onSave}: ProductDialogPro
           fullWidth name={"shortName"} label="Short Name" variant="outlined" value={product.shortName} onChange={onChange}
         />
         <TextField
-          fullWidth name={"expectedPrice"} label="Expected Price" variant="outlined" value={product.expectedPrice} onChange={onChange}
-        />
-        <TextField
           fullWidth name={"description"} label="description" variant="outlined" value={product.description} onChange={onChange}
         />
 

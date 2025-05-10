@@ -4,6 +4,8 @@ import Employee from '../pages/Employee'
 import Test from '../pages/Test'
 import Order from '../pages/Order'
 import OrderDetail from '../pages/OrderDetail'
+import Color from '../pages/Color'
+import Customer from '../pages/Customer'
 
 const router = createBrowserRouter([
   {
@@ -13,6 +15,14 @@ const router = createBrowserRouter([
   {
     path: "/order/:id",
     element: <OrderDetail/>,
+  },
+  {
+    path: "/color",
+    element: <Color/>,
+  },
+  {
+    path: "/customer",
+    element: <Customer/>,
   },
   {
     path: "/product",

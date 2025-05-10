@@ -20,7 +20,7 @@ export class CustomerService extends BaseService {
       .select([
         'customer.id as id',
         'customer.name as name',
-        'customer.company_name as companyName',
+        'customer.company_name as "companyName"',
         'customer.description as description',
       ])
   }

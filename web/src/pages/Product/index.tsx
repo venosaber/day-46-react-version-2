@@ -1,5 +1,5 @@
 import {FTable, FHeader, ProductDialog} from '../../components'
-import {Color, Header, Product} from '../../utils'
+import {Color, Employee, Header, Product} from '../../utils'
 import {Button} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
@@ -39,16 +39,22 @@ export default () => {
     setIsOpenDialog(true)
   }, [products])
 
-  // const pros = useMemo(() => {
-  //   return []
-  // }, [])
-
   const onSave = async () => {
-    setProducts([...products, curProduct])
+    console.log(curProduct)
     setIsOpenDialog(false)
-    // if id is not null -> update else -> create
-    if (curProduct.id) await putMethod(`/products/${curProduct.id}`, toBody())
-    else await postMethod(`/products`, toBody())
+
+    if (curProduct.id) {
+      const newProduct: Product = await putMethod(`/products/${curProduct.id}`, toBody())
+      const updateIndex = products.findIndex(
+        (e: Product) => Number(e.id) === Number(curProduct.id)
+      )
+      products[updateIndex] = newProduct
+      setProducts([...products])
+    }
+    else {
+      const newProduct: Product = await postMethod('/products', toBody())
+      setProducts([...products, newProduct])
+    }
   }
 
   const toBody = () => {
@@ -61,16 +67,15 @@ export default () => {
     }
   }
 
-  const getData = async () => {
+  const onMounted = async () => {
     const [colorData, productsData] = await Promise.all([getMethod('/colors'), getMethod('/products')])
 
     setProducts([...productsData])
     setColors([...colorData])
   }
 
-  // onmounted
   useEffect(() => {
-    getData()
+    onMounted()
   }, [])
 
   return (

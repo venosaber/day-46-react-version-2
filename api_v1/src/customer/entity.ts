@@ -12,5 +12,8 @@ export class CustomerEntity extends BaseEntity {
   companyName: string
 
   @Column()
+  address: string
+
+  @Column()
   description: string
 }

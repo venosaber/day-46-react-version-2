@@ -21,7 +21,7 @@ export class ProductService extends BaseService {
       .select([
         'product.id as id',
         'product.name as name',
-        'product.short_name as shortName',
+        'product.short_name as "shortName"',
         'product.code as code',
         'product.description as description',
         `case 
