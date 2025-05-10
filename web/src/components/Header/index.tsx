@@ -7,7 +7,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import FDrawer from '../FDrawer'
 import {useState} from "react";
 
-export default function Header() {
+interface Header {
+  title: string
+}
+
+export default function Header({title}: Header) {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -16,9 +20,11 @@ export default function Header() {
           <IconButton onClick={() => setIsOpen(true)} edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
-            Photos
-          </Typography>
+          <Box sx={{ margin: 'auto' }}>
+            <Typography variant="h6" color="inherit">
+              {title}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 

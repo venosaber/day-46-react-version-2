@@ -63,7 +63,7 @@ export default () => {
 
   return (
     <>
-      <FHeader/>
+      <FHeader title={'Colors'}/>
       <Box sx={{maxWidth: 500, margin: 'auto'}}>
         <SearchBar onAdd={onAdd}/>
 

@@ -80,7 +80,7 @@ export default () => {
 
   return (
     <>
-      <FHeader/>
+      <FHeader title={'Products'}/>
       <Box className={'container'}>
         <SearchBar onAdd={onAdd}/>
 

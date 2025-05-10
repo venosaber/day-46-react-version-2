@@ -74,7 +74,7 @@ export default () => {
 
   return (
     <>
-      <FHeader/>
+      <FHeader title={'Customers'}/>
       <Box className={'container'}>
         <SearchBar onAdd={onAdd}/>
 

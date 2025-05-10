@@ -82,7 +82,7 @@ export default function() {
 
   return (
     <>
-      <FHeader/>
+      <FHeader title={'Order Details'}/>
       <Box sx={{maxWidth: 1200, margin: 'auto'}} padding={2}>
         <h2 style={{padding: '10px'}}>New Order</h2>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

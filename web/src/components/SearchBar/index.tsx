@@ -11,6 +11,7 @@ export default function ({onAdd}: SearchBarI) {
   return (
     <Box sx={{display: 'flex', marginBottom: 5, marginTop: 5}}>
       <TextField
+        label={'Search'}
         sx={{flexGrow: 1, marginRight: 1}}
         size={"small"}
         variant={"outlined"}
