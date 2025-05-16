@@ -20,8 +20,10 @@ export default function () {
 
   const [cell, setCell] = useState(defaultCell)
 
+  console.log('cell', cell)
   useEffect(() => {
     setCell(defaultCell || '')
+    console.log(defaultCell)
   }, [defaultCell])
 
   const cursorBorderWidth = 2
@@ -71,89 +73,71 @@ export default function () {
 
   return (
     <span style={style} className={`cell-input ${cursor.editing ? 'editing' : ''}`}>
-      <TextField
-        autoComplete={'off'}
-        sx={{
-          padding: 0,
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              border: 'none', // remove default border
-            },
-            '&:hover fieldset': {
-              border: 'none', // remove on hover
-            },
-            '&.Mui-focused fieldset': {
-              border: 'none', // remove on focus
-            },
-          },
-          '& .MuiOutlinedInput-input': {
-            padding: '4px', // your custom padding
-          },
-        }}
-        value={cell}
-        onChange={(e) => onChange(e.target.value)}
-        onKeyDown={onKeyDown}
-      />
-    </span>
+       {
+         columns[cursor.columnIndex].dropdown
+           ? <Autocomplete
+             fullWidth
+             options={columns[cursor.columnIndex].items}
+             getOptionLabel={(option: any) => option.name}
+             getOptionKey={(option) => option.id}
+             openOnFocus={true}
+             renderInput={(params) =>
+               <TextField
+                 {...params}
+                 variant={"standard"}
+                 sx={{
+                   padding: 0,
+                   '& .MuiOutlinedInput-root': {
+                     '& fieldset': {
+                       border: 'none', // remove default border
+                     },
+                     '&:hover fieldset': {
+                       border: 'none', // remove on hover
+                     },
+                     '&.Mui-focused fieldset': {
+                       border: 'none', // remove on focus
+                     },
+                   },
+                   '& .MuiOutlinedInput-input': {
+                     padding: '4px', // your custom padding
+                   },
+                 }}
+               />}
+             value={columns[cursor.columnIndex].items?.find(item => item.name === cell) || null}
+             onChange={(_, newValue) => {
+               console.log(newValue.name)
+               onChange(newValue.name)
+             }}
+             onKeyDown={onKeyDown}
+           />
+           : <TextField
+             autoComplete={'off'}
+             sx={{
+               padding: 0,
+               '& .MuiOutlinedInput-root': {
+                 '& fieldset': {
+                   border: 'none', // remove default border
+                 },
+                 '&:hover fieldset': {
+                   border: 'none', // remove on hover
+                 },
+                 '&.Mui-focused fieldset': {
+                   border: 'none', // remove on focus
+                 },
+               },
+               '& .MuiOutlinedInput-input': {
+                 padding: '4px', // your custom padding
+               },
+             }}
+             value={cell}
+             onChange={(e) => onChange(e.target.value)}
+             onKeyDown={onKeyDown}
+           />
+       }
+      
+
+      </span>
   )
 }
 
-/**
- * {
- *         columns[cursor.columnIndex].dropdown
- *           ? <Autocomplete
- *               fullWidth
- *               options={columns[cursor.columnIndex].items}
- *               getOptionLabel={(option) => option.name}
- *               renderInput={(params) =>
- *                 <TextField
- *                   {...params}
- *                   variant={"standard"}
- *                   sx={{
- *                     padding: 0,
- *                     '& .MuiOutlinedInput-root': {
- *                       '& fieldset': {
- *                         border: 'none', // remove default border
- *                       },
- *                       '&:hover fieldset': {
- *                         border: 'none', // remove on hover
- *                       },
- *                       '&.Mui-focused fieldset': {
- *                         border: 'none', // remove on focus
- *                       },
- *                     },
- *                     '& .MuiOutlinedInput-input': {
- *                       padding: '4px', // your custom padding
- *                     },
- *                   }}
- *                 />}
- *               onChange={(_, newValue) => {
- *                 onChange(newValue.name)
- *               }}
- *               onKeyDown={onKeyDown}
- *             />
- *           : <TextField
- *             autoComplete={'off'}
- *             sx={{
- *               padding: 0,
- *               '& .MuiOutlinedInput-root': {
- *                 '& fieldset': {
- *                   border: 'none', // remove default border
- *                 },
- *                 '&:hover fieldset': {
- *                   border: 'none', // remove on hover
- *                 },
- *                 '&.Mui-focused fieldset': {
- *                   border: 'none', // remove on focus
- *                 },
- *               },
- *               '& .MuiOutlinedInput-input': {
- *                 padding: '4px', // your custom padding
- *               },
- *             }}
- *             value={cell}
- *             onChange={(e) => onChange(e.target.value)}
- *             onKeyDown={onKeyDown}
- *           />
- *       }
- */
+

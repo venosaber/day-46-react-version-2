@@ -7,8 +7,8 @@ const columns = [
     name: 'assign_type',
     header: true,
     items: [
-      {id: 1, name: '注文', code: 1, search_str: '注文|1'},
-      {id: 2, name: 'セリ', code: 2, search_str: 'セリ|2'},
+      {id: 1, name: 'order', code: 1, search_str: 'order|1'},
+      {id: 2, name: 'seri', code: 2, search_str: 'seri|2'},
       {id: 3, name: '依頼', code: 2, search_str: '依頼|3'},
       {id: 4, name: '定期', code: 2, search_str: '定期|4'},
       {id: 5, name: '買付', code: 2, search_str: '買付|5'},
@@ -76,17 +76,17 @@ const columns = [
 export default function () {
   const [rows, setRows] = useState([
     {
-      assign_type: '注文',
+      assign_type: '',
       item: 'カトレア 切',
       variety: 'ハッピーストリーム',
     },
     {
-      assign_type: '注文',
+      assign_type: 'order',
       item: 'カトレア 切',
       variety: 'ハニールージュ',
     },
     {
-      assign_type: '注文',
+      assign_type: 'seri',
       item: 'カトレア 切',
       variety: 'ビックリップ',
     }
