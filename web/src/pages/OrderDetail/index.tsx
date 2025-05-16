@@ -5,24 +5,37 @@ import dayjs from 'dayjs';
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from "@mui/material/Box";
+import {Customer, getMethod, Product, OrderDetail} from "../../utils";
 
+interface OrderDetailProps {
+  products: Product[]
+  detail: OrderDetail
+  index: number
+  order: any,
+  setOrder: (order: any) => void
+}
 
-const customers = [
-  { id: 1, name: 'Dung', address: 'Thanh Oai - Ha Noi' },
-  { id: 2, name: 'Trung', address: 'Thanh Oai 2 - ha noi' },
-  { id: 3, name: 'Giang', address: 'Ca Mau - Viet Nam' },
-  { id: 4, name: 'Huy', address: 'My' },
-  { id: 5, name: 'Dung', address: 'QUoc Oai - Ha Noi' },
-]
+const OrderDetailComponent = ({detail, products, index, order, setOrder}: OrderDetailProps) => {
+  const onInput = (value, key) => {
+    console.log(order)
+    console.log(value, key, isNaN(Number(value)), index)
 
-const OrderDetailComponent = () => {
+    let isValid = !isNaN(Number(value))
+
+    const newDetails = order.details
+    newDetails[index] = { ...newDetails[index], [key]: value, isValid }
+    setOrder({
+      ...order, details: newDetails
+    })
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 3 }}>
         <Autocomplete
           fullWidth={true}
           disablePortal
-          options={[]}
+          options={products}
           getOptionLabel={(option: any) => option.name}
           getOptionKey={(option) => option.id}
           renderInput={
@@ -30,7 +43,7 @@ const OrderDetailComponent = () => {
           }
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 3 }}>
+      <Grid size={{xs: 12, md: 3}}>
         <TextField
           fullWidth
           label="Price"
@@ -39,9 +52,13 @@ const OrderDetailComponent = () => {
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
         <TextField
+          value={detail.quantity}
+          onChange={(e) => onInput(e.target.value, 'quantity')}
           fullWidth
           label="Quantity"
           variant="outlined"
+          error={!detail.isValid}
+          helperText={detail.isValid ? null : "quantity must be number"}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
@@ -56,7 +73,9 @@ const OrderDetailComponent = () => {
 }
 
 export default function() {
-  const emptyDetail = { id: null, productsId: '', price: '', quantity: '', amount: '' }
+  const emptyDetail = { id: null, productsId: '', price: '', quantity: '', amount: '', isValid: true }
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [products, setProducts] = useState<Product[]>([])
 
   const [order, setOrder] = useState({
     id: null,
@@ -76,9 +95,18 @@ export default function() {
     setOrder({...order, details})
   }
 
+  const onMounted = async () => {
+    // get data from api
+    const [customerData, productData] = await Promise.all([
+      getMethod('/customers/'), getMethod('/products')
+    ])
+    setCustomers(customerData)
+    setProducts(productData)
+  }
+
   useEffect(() => {
-    console.log(order)
-  }, [order]);
+    onMounted()
+  }, [])
 
   return (
     <>
@@ -93,11 +121,11 @@ export default function() {
                 disablePortal
                 options={customers}
                 getOptionLabel={(option: any) => option.name}
-                getOptionKey={(option) => option.id}
+                getOptionKey={(option: Customer) => option.id}
                 renderInput={
                   (params) => <TextField {...params} label="Customer Name" value={order.customer?.name} />
                 }
-                onChange={(event, newValue) => {
+                onChange={(event, newValue: Customer) => {
                   setOrder({...order, customer: newValue, deliveryAddress: newValue?.address})
                 }}
               />
@@ -125,7 +153,16 @@ export default function() {
         <Button onClick={onAddNewDetail}>Add new detail</Button>
         {
           order.details.map((detail, index) => {
-            return <OrderDetailComponent/>
+            return (
+              <OrderDetailComponent
+                key={index}
+                index={index}
+                detail={detail}
+                order={order}
+                setOrder={setOrder}
+                products={products}
+              />
+            )
           })
         }
       </Box>
