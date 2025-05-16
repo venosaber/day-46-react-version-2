@@ -2,7 +2,7 @@ import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Row from './Row.tsx'
 import './style.sass'
 import CellCursor from "./CellCursor.tsx";
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useState, useRef} from "react";
 import CellInput from "./CellInput.tsx";
 
 const defaultCursor = {
@@ -27,9 +27,10 @@ const onFocus = () => {
 function FTableComponent({columns, rows, onInput}: any) {
 
   const [cursor, setCursor] = useState({...defaultCursor})
+  const tableRef = useRef<HTMLTableElement>(null)
 
   const provider = {
-    cursor, setCursor, rows, columns, onFocus, onInput
+    cursor, setCursor, rows, columns, onFocus, onInput, tableRef
   }
 
   const onKeyDown = (e: any) => {
@@ -48,7 +49,7 @@ function FTableComponent({columns, rows, onInput}: any) {
   return (
     // @ts-ignore
     <TableContext.Provider value={provider}>
-      <Table className={'f-editable-table'} tabIndex={0} onKeyDown={onKeyDown}>
+      <Table className={'f-editable-table'} tabIndex={0} onKeyDown={onKeyDown} ref={tableRef}>
         <TableHead>
           <TableRow>
             {

@@ -7,6 +7,10 @@ export default function () {
   const injector: any = useContext(TableContext)
   const {cursor} = injector
 
+  const onKeyDown = () => {
+    console.log('onKeyDown trong cell cursor')
+  }
+
   return (
     <span
       className={'cursor'}
@@ -16,6 +20,8 @@ export default function () {
         width: `${cursor.width}px`,
         height: `${cursor.height}px`,
       }}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
     />
   )
 }

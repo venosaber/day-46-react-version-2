@@ -14,7 +14,7 @@ const onBlur = () => {
 export default function () {
 
   const injector: any = useContext(TableContext)
-  const {cursor, rows, columns, setCursor, onInput} = injector
+  const {cursor, rows, columns, setCursor, onInput, tableRef} = injector
 
   const defaultCell = rows[cursor.rowIndex][columns[cursor.columnIndex].name]
 
@@ -45,7 +45,9 @@ export default function () {
       }
 
       const nextCell: any = document.querySelector(`.cell-${rowIndex}-${columnIndex}`)
-      // onBlur()
+
+      onBlur()
+
       setCursor({
         ...cursor,
         columnIndex,
@@ -53,8 +55,10 @@ export default function () {
         top: nextCell.offsetTop,
         left: nextCell.offsetLeft,
         width: nextCell.offsetWidth,
-        // editing: true
+        editing: false
       })
+
+      tableRef?.current?.focus()
     }
   }
 
