@@ -68,7 +68,7 @@ export default function () {
     setCell(value)
 
     rows[cursor.rowIndex][columns[cursor.columnIndex].name] = value
-    onInput(value)
+    onInput(value, cursor.rowIndex, cursor.columnIndex)
   }
 
   return (

@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Table, TableBody, TableCell, TableHead, TableRow, Box} from "@mui/material";
 import Row from './Row.tsx'
 import './style.sass'
 import CellCursor from "./CellCursor.tsx";
@@ -19,7 +19,6 @@ export const TableContext = createContext(null);
 
 const onFocus = () => {
   const input = document.querySelector('.cell-input input')
-  console.log(input)
   // @ts-ignore
   input.focus()
 }
@@ -34,7 +33,6 @@ function FTableComponent({columns, rows, onInput}: any) {
   }
 
   const onKeyDown = (e: any) => {
-    console.log('keydown index')
     setCursor({
       ...cursor, editing: true
     })
@@ -42,45 +40,43 @@ function FTableComponent({columns, rows, onInput}: any) {
     onFocus()
   }
 
-  useEffect(() => {
-    console.log('cursor', cursor)
-  }, [cursor])
-
   return (
     // @ts-ignore
-    <TableContext.Provider value={provider}>
-      <Table className={'f-editable-table'} tabIndex={0} onKeyDown={onKeyDown} ref={tableRef}>
-        <TableHead>
-          <TableRow>
+    <Box className={'f-editable-table'}>
+      <TableContext.Provider value={provider}>
+        <Table tabIndex={0} onKeyDown={onKeyDown} ref={tableRef}>
+          <TableHead>
+            <TableRow>
+              {
+                columns.map((column: any) => {
+                  return <TableCell width={column.width} size={"small"} key={column.name}>{column.name}</TableCell>
+                })
+              }
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
             {
-              columns.map((column: any) => {
-                return <TableCell size={"small"} key={column.name}>{column.name}</TableCell>
+              rows?.map((row: any, rowIndex: number) => {
+                // @ts-ignore
+                return (
+                  <Row
+                    key={`row-${rowIndex}`}
+                    columns={columns}
+                    row={row}
+                    rowIndex={rowIndex}
+                  />
+                )
               })
             }
-          </TableRow>
-        </TableHead>
 
-        <TableBody>
-          {
-            rows?.map((row: any, rowIndex: number) => {
-              // @ts-ignore
-              return (
-                <Row
-                  key={`row-${rowIndex}`}
-                  columns={columns}
-                  row={row}
-                  rowIndex={rowIndex}
-                />
-              )
-            })
-          }
+          </TableBody>
+        </Table>
 
-        </TableBody>
-      </Table>
-
-      <CellCursor/>
-      <CellInput/>
-    </TableContext.Provider>
+        <CellCursor/>
+        <CellInput/>
+      </TableContext.Provider>
+    </Box>
   )
 }
 

@@ -1,4 +1,4 @@
-import {FHeader} from "../../components";
+import {FHeader, FEditableTable} from "../../components";
 import {Autocomplete, Button, Grid, TextField} from '@mui/material'
 import {useEffect, useState} from "react";
 import dayjs from 'dayjs';
@@ -11,6 +11,14 @@ export default function() {
   const emptyDetail = { id: null, productsId: '', price: '', quantity: '', amount: '', isValid: true }
   const [customers, setCustomers] = useState<Customer[]>([])
   const [products, setProducts] = useState<Product[]>([])
+
+  const [headers, setHeaders] = useState([
+    { name: 'product', items: products, dropdown: true, width: '30%' },
+    { name: 'quantity', width: '15%' },
+    { name: 'price', width: '15%' },
+    { name: 'amount', width: '15%' },
+    { name: 'comment', width: '25%' },
+  ])
 
   const [order, setOrder] = useState({
     id: null,
@@ -37,6 +45,20 @@ export default function() {
     ])
     setCustomers(customerData)
     setProducts(productData)
+
+    const newHeaders = [...headers]
+    newHeaders[0].items = productData
+    setHeaders([...newHeaders])
+  }
+
+  const onSave = () => {
+    console.log(order)
+  }
+
+  const onInput = (value, rowIndex, columnIndex) => {
+    for (const detail of order.details) {
+      if (detail.quantity && detail.price) detail.amount = detail.quantity * detail.price
+    }
   }
 
   useEffect(() => {
@@ -85,8 +107,10 @@ export default function() {
         </LocalizationProvider>
 
         <h2 style={{padding: '10px'}}>Order Details</h2>
-        <Button onClick={onAddNewDetail}>Add new detail</Button>
+        <Button variant={'outlined'} onClick={onAddNewDetail}>Add new detail</Button>
+        <Button variant={'outlined'} onClick={onSave}>Save</Button>
 
+        <FEditableTable columns={headers} rows={order.details} onInput={onInput}/>
       </Box>
     </>
   )
