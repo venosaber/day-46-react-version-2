@@ -4,6 +4,7 @@ import './style.sass'
 import CellCursor from "./CellCursor.tsx";
 import {createContext, useEffect, useState, useRef} from "react";
 import CellInput from "./CellInput.tsx";
+import CellSelection from "./CellSelection.tsx";
 
 const defaultCursor = {
   rowIndex: 0,
@@ -75,6 +76,7 @@ function FTableComponent({columns, rows, onInput}: any) {
 
         <CellCursor/>
         <CellInput/>
+        {/*<CellSelection/>*/}
       </TableContext.Provider>
     </Box>
   )
