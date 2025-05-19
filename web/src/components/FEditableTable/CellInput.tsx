@@ -6,7 +6,6 @@ import './style.sass'
 
 const onBlur = () => {
   const input = document.querySelector('.cell-input input')
-  console.log(input)
   // @ts-ignore
   input.blur()
 }
@@ -20,10 +19,8 @@ export default function () {
 
   const [cell, setCell] = useState(defaultCell)
 
-  console.log('cell', cell)
   useEffect(() => {
     setCell(defaultCell || '')
-    console.log(defaultCell)
   }, [defaultCell])
 
   const cursorBorderWidth = 2
@@ -34,7 +31,6 @@ export default function () {
   }
 
   const onKeyDown = (event: any) => {
-    console.log('keydown cell input')
     if (event.key === 'Enter') {
       let columnIndex = cursor.columnIndex
       let rowIndex = cursor.rowIndex
@@ -105,7 +101,6 @@ export default function () {
                />}
              value={columns[cursor.columnIndex].items?.find(item => item.name === cell) || null}
              onChange={(_, newValue) => {
-               console.log(newValue.name)
                onChange(newValue.name)
              }}
              onKeyDown={onKeyDown}

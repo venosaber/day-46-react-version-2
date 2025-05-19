@@ -28,9 +28,10 @@ function FTableComponent({columns, rows, onInput}: any) {
 
   const [cursor, setCursor] = useState({...defaultCursor})
   const tableRef = useRef<HTMLTableElement>(null)
+  const tableBodyRef = useRef<HTMLTableElement>(null)
 
   const provider = {
-    cursor, setCursor, rows, columns, onFocus, onInput, tableRef
+    cursor, setCursor, rows, columns, onFocus, onInput, tableRef, tableBodyRef
   }
 
   const onKeyDown = (e: any) => {
@@ -39,6 +40,40 @@ function FTableComponent({columns, rows, onInput}: any) {
     })
 
     onFocus()
+  }
+
+  const onMouseMove = () => {
+    console.log('mousemove')
+  }
+
+  const onMouseDown = (e) => {
+    const target = e.target.closest('td')
+    const classList = Array.from(target.classList)
+    const [_, row, column] = classList.find(c => c.includes('cell-')).split('-')
+
+    setCursor({
+      ...cursor,
+      rowIndex: Number(row),
+      columnIndex: Number(column),
+      left: target.offsetLeft,
+      top: target.offsetTop,
+      width: target.offsetWidth,
+      height: target.offsetHeight
+    })
+
+    document.querySelector('tbody').addEventListener('mousemove', onMouseMove)
+  }
+
+  const onMouseUp = (e) => {
+    const target = e.target.closest('td')
+    const classList = Array.from(target.classList)
+    const [_, row, column] = classList.find(c => c.includes('cell-')).split('-')
+
+    document.querySelector('tbody').removeEventListener('mousemove', onMouseMove)
+  }
+
+  const onMouseOver = () => {
+    document.querySelector('tbody').removeEventListener('mousemove', onMouseMove)
   }
 
   return (
@@ -56,7 +91,7 @@ function FTableComponent({columns, rows, onInput}: any) {
             </TableRow>
           </TableHead>
 
-          <TableBody>
+          <TableBody onMouseDown={onMouseDown} onMouseUp={onMouseUp} ref={tableBodyRef}>
             {
               rows?.map((row: any, rowIndex: number) => {
                 // @ts-ignore
@@ -76,7 +111,7 @@ function FTableComponent({columns, rows, onInput}: any) {
 
         <CellCursor/>
         <CellInput/>
-        {/*<CellSelection/>*/}
+        <CellSelection/>
       </TableContext.Provider>
     </Box>
   )

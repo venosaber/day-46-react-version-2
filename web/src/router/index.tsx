@@ -6,6 +6,7 @@ import Order from '../pages/Order'
 import OrderDetail from '../pages/Order/details'
 import Color from '../pages/Color'
 import Customer from '../pages/Customer'
+import UseReducer from '../pages/UseReducer'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/test",
     element: <Test/>,
+  },
+  {
+    path: "/useReducer",
+    element: <UseReducer/>,
   },
 ]);
 
