@@ -8,6 +8,7 @@ import Color from '../pages/Color'
 import Customer from '../pages/Customer'
 import UseReducer from '../pages/UseReducer'
 import ToDoApp from '../pages/ToDoApp'
+import ChatApp from '../pages/ChatApp'
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/ToDoApp",
     element: <ToDoApp/>,
+  },
+  {
+    path: "/ChatApp",
+    element: <ChatApp/>,
   },
 ]);
 
