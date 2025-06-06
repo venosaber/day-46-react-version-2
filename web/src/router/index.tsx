@@ -48,7 +48,7 @@ const router = createBrowserRouter([
     element: <ToDoApp/>,
   },
   {
-    path: "/ChatApp",
+    path: "/ChatApp/:name",
     element: <ChatApp/>,
   },
 ]);
