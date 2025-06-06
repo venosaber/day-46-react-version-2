@@ -3,6 +3,8 @@ import {Customer, Header} from '../../utils'
 import {Box} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {useSelector} from "react-redux";
+import store, {getCustomers, createCustomer} from '../../store'
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -23,8 +25,9 @@ export default () => {
     address: '',
     description: ''
   })
-
-  const [customers, setCustomers] = useState<Customer[]>([])
+  const {isLoading, data: customers} = useSelector(state => state.customers)
+  console.log(customers)
+  // const [customers, setCustomers] = useState<Customer[]>([])
 
   const onAdd = () => {
     setIsOpenDialog(true)
@@ -45,11 +48,13 @@ export default () => {
         (e: Customer) => Number(e.id) === Number(curCustomer.id)
       )
       customers[updateIndex] = newCustomer
-      setCustomers([...customers])
+      // setCustomers([...customers])
     }
     else {
-      const newCustomer: Customer = await postMethod('/customers', toBody())
-      setCustomers([...customers, newCustomer])
+      // const newCustomer: Customer = await postMethod('/customers', toBody())
+      // setCustomers([...customers, newCustomer])
+      // @ts-ignore
+      store.dispatch(createCustomer(toBody()))
     }
   }
 
@@ -62,15 +67,15 @@ export default () => {
     }
   }
 
-  const onMounted = async () => {
-    const customersData = await getMethod('/customers')
-    console.log(customersData)
-    setCustomers([...customersData])
-  }
-
-  useEffect(() => {
-    onMounted()
-  }, [])
+  // const onMounted = async () => {
+  //   const customersData = await getMethod('/customers')
+  //   console.log(customersData)
+  //   setCustomers([...customersData])
+  // }
+  //
+  // useEffect(() => {
+  //   onMounted()
+  // }, [])
 
   return (
     <>
