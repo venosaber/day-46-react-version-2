@@ -1,9 +1,9 @@
 import {FTable, FHeader, ProductDialog, SearchBar} from '../../components'
-import {Color, Employee, Header, Product} from '../../utils'
-import {Box, Button} from "@mui/material";
-import {useState, useEffect, useCallback} from "react";
-import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {Header, Product} from '../../utils'
+import {Box} from "@mui/material";
+import {useState, useCallback} from "react";
 import {useSelector} from "react-redux";
+import store, {RootState, updateProduct, createProduct} from "../../store";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -27,7 +27,7 @@ export default () => {
     color: null
   })
 
-  const {data: products} = useSelector(state => state.products)
+  const {data: products} = useSelector((state: RootState) => state.products)
   // const {data: colors} = useSelector(state => state.products)
 
   const onAdd = () => {
@@ -44,18 +44,10 @@ export default () => {
     console.log(curProduct)
     setIsOpenDialog(false)
 
-    if (curProduct.id) {
-      const newProduct: Product = await putMethod(`/products/${curProduct.id}`, toBody())
-      const updateIndex = products.findIndex(
-        (e: Product) => Number(e.id) === Number(curProduct.id)
-      )
-      products[updateIndex] = newProduct
-      // setProducts([...products])
-    }
-    else {
-      const newProduct: Product = await postMethod('/products', toBody())
-      // setProducts([...products, newProduct])
-    }
+    // @ts-ignore
+    if (curProduct.id) store.dispatch(updateProduct({...toBody(), id: curProduct.id}))
+    // @ts-ignore
+    else store.dispatch(createProduct(toBody()))
   }
 
   const toBody = () => {

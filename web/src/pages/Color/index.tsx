@@ -1,9 +1,9 @@
 import {FTable, FHeader, ColorDialog, SearchBar} from '../../components'
 import {Color, Header} from '../../utils'
 import {Box} from "@mui/material";
-import {useState, useEffect, useCallback} from "react";
-import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {useState, useCallback} from "react";
 import {useSelector} from "react-redux";
+import store, {RootState, createColor, updateColor} from "../../store";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -18,7 +18,7 @@ export default () => {
     id: 0,
     name: ''
   })
-  const {data: colors} = useSelector(state => state.colors)
+  const {data: colors} = useSelector((state: RootState) => state.colors)
   // const [colors, setColors] = useState<Color[]>([])
 
   const onAdd = () => {
@@ -34,18 +34,10 @@ export default () => {
   const onSave = async () => {
     setIsOpenDialog(false)
 
-    if (curColor.id) {
-      const newColor: Color = await putMethod(`/colors/${curColor.id}`, toBody())
-      const updateIndex = colors.findIndex(
-        (e: Color) => Number(e.id) === Number(curColor.id)
-      )
-      colors[updateIndex] = newColor
-      // setColors([...colors])
-    }
-    else {
-      const newColor: Color = await postMethod('/colors', toBody())
-      // setColors([...colors, newColor])
-    }
+    // @ts-ignore
+    if (curColor.id) store.dispatch(updateColor({...toBody(), id: curColor.id}))
+    // @ts-ignore
+    else store.dispatch(createColor(toBody()))
   }
 
   const toBody = () => {

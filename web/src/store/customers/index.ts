@@ -1,17 +1,16 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {getMethod, postMethod, putMethod} from "../../utils";
+import {Customer, getMethod, postMethod, putMethod} from "../../utils";
 
 
 export const getCustomers = createAsyncThunk('customers/getCustomers', async () => {
   return await getMethod('/customers/')
 })
 
-export const createCustomer = createAsyncThunk('customers/createCustomer', async (customer) => {
+export const createCustomer = createAsyncThunk('customers/createCustomer', async (customer: Customer) => {
   return await postMethod('/customers/', customer)
 })
 
-export const updateCustomer = createAsyncThunk('customers/update', async (customer) => {
-  console.log('payload', customer)
+export const updateCustomer = createAsyncThunk('customers/update', async (customer: Customer) => {
   return await putMethod(`/customers/${customer.id}`, customer)
 })
 

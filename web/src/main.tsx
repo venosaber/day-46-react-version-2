@@ -4,8 +4,8 @@ import './index.css'
 import router from "./router"
 import store, {getProducts, getCustomers, getColors} from './store'
 import {Provider} from "react-redux";
-
 import {RouterProvider} from "react-router";
+import {ToastContainer} from "react-toastify";
 
 
 const root = document.getElementById("root");
@@ -18,6 +18,7 @@ createRoot(root!).render(
   <>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <ToastContainer />
     </Provider>
   </>
 )

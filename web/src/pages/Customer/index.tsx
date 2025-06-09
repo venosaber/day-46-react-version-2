@@ -1,10 +1,9 @@
 import {FTable, FHeader, CustomerDialog, SearchBar} from '../../components'
 import {Customer, Header} from '../../utils'
 import {Box} from "@mui/material";
-import {useState, useEffect, useCallback} from "react";
-import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {useState, useCallback} from "react";
 import {useSelector} from "react-redux";
-import store, {getCustomers, createCustomer, updateCustomer} from '../../store'
+import store, {createCustomer, RootState, updateCustomer} from '../../store'
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -25,9 +24,7 @@ export default () => {
     address: '',
     description: ''
   })
-  const {isLoading, data: customers} = useSelector(state => state.customers)
-  console.log(customers)
-  // const [customers, setCustomers] = useState<Customer[]>([])
+  const {data: customers} = useSelector((state: RootState) => state.customers)
 
   const onAdd = () => {
     setIsOpenDialog(true)

@@ -20,3 +20,4 @@ export * from './products'
 export * from './customers'
 // @ts-ignore
 export * from './colors'
+export type RootState = ReturnType<typeof store.getState>
