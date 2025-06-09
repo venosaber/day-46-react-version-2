@@ -14,19 +14,21 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
+const defaultCustomer = {
+  id: 0,
+  name: '',
+  companyName: '',
+  address: '',
+  description: ''
+}
 
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curCustomer, setCurCustomer] = useState<Customer>({
-    id: 0,
-    name: '',
-    companyName: '',
-    address: '',
-    description: ''
-  })
+  const [curCustomer, setCurCustomer] = useState<Customer>({...defaultCustomer})
   const {data: customers} = useSelector((state: RootState) => state.customers)
 
   const onAdd = () => {
+    setCurCustomer({...defaultCustomer})
     setIsOpenDialog(true)
   }
 
@@ -53,16 +55,6 @@ export default () => {
       description: curCustomer.description
     }
   }
-
-  // const onMounted = async () => {
-  //   const customersData = await getMethod('/customers')
-  //   console.log(customersData)
-  //   setCustomers([...customersData])
-  // }
-  //
-  // useEffect(() => {
-  //   onMounted()
-  // }, [])
 
   return (
     <>

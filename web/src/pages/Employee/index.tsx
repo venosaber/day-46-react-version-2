@@ -14,21 +14,24 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
+const defaultEmployee = {
+  id: 0,
+  name: '',
+  age: '',
+  salary: '',
+  address: '',
+  position: '',
+  status: ''
+}
+
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curEmployee, setCurEmployee] = useState<Employee>({
-    id: 0,
-    name: '',
-    age: 0,
-    salary: 0,
-    address: '',
-    position: '',
-    status: ''
-  })
+  const [curEmployee, setCurEmployee] = useState<Employee>({...defaultEmployee})
 
   const [employees, setEmployees] = useState<Employee[]>([])
 
   const onAdd = () => {
+    setCurEmployee({...defaultEmployee})
     setIsOpenDialog(true)
   }
 
@@ -39,10 +42,7 @@ export default () => {
   }
 
   const onSave = async () => {
-    // setEmployees([...employees, curEmployee])
     setIsOpenDialog(false)
-    // todo: call api and save
-    console.log("curEmployee", curEmployee)
 
     if (curEmployee.id) {
       const newEmployee: Employee = await putMethod(`/employee/${curEmployee.id}`, toBody())
@@ -50,7 +50,6 @@ export default () => {
         (e: Employee) => Number(e.id) === Number(curEmployee.id)
       )
       employees[updateEmployeeIndex] = newEmployee
-      console.log(employees, updateEmployeeIndex)
       setEmployees([...employees])
     }
     else {

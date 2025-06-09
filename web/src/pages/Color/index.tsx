@@ -11,17 +11,19 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
+const defaultColor = {
+  id: 0,
+  name: ''
+}
 
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curColor, setCurColor] = useState<Color>({
-    id: 0,
-    name: ''
-  })
+  const [curColor, setCurColor] = useState<Color>({...defaultColor})
   const {data: colors} = useSelector((state: RootState) => state.colors)
   // const [colors, setColors] = useState<Color[]>([])
 
   const onAdd = () => {
+    setCurColor({...defaultColor})
     setIsOpenDialog(true)
   }
 
