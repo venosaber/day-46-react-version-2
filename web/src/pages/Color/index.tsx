@@ -3,6 +3,7 @@ import {Color, Header} from '../../utils'
 import {Box} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {useSelector} from "react-redux";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -17,7 +18,8 @@ export default () => {
     id: 0,
     name: ''
   })
-  const [colors, setColors] = useState<Color[]>([])
+  const {data: colors} = useSelector(state => state.colors)
+  // const [colors, setColors] = useState<Color[]>([])
 
   const onAdd = () => {
     setIsOpenDialog(true)
@@ -38,11 +40,11 @@ export default () => {
         (e: Color) => Number(e.id) === Number(curColor.id)
       )
       colors[updateIndex] = newColor
-      setColors([...colors])
+      // setColors([...colors])
     }
     else {
       const newColor: Color = await postMethod('/colors', toBody())
-      setColors([...colors, newColor])
+      // setColors([...colors, newColor])
     }
   }
 
@@ -51,15 +53,6 @@ export default () => {
       name: curColor.name
     }
   }
-
-  const onMounted = async () => {
-    const colorsData  = await getMethod('/colors')
-    setColors([...colorsData])
-  }
-
-  useEffect(() => {
-    onMounted()
-  }, [])
 
   return (
     <>

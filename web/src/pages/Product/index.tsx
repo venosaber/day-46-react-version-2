@@ -3,6 +3,7 @@ import {Color, Employee, Header, Product} from '../../utils'
 import {Box, Button} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
+import {useSelector} from "react-redux";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -26,8 +27,8 @@ export default () => {
     color: null
   })
 
-  const [products, setProducts] = useState<Product[]>([])
-  const [colors, setColors] = useState<Color[]>([])
+  const {data: products} = useSelector(state => state.products)
+  // const {data: colors} = useSelector(state => state.products)
 
   const onAdd = () => {
     setIsOpenDialog(true)
@@ -49,11 +50,11 @@ export default () => {
         (e: Product) => Number(e.id) === Number(curProduct.id)
       )
       products[updateIndex] = newProduct
-      setProducts([...products])
+      // setProducts([...products])
     }
     else {
       const newProduct: Product = await postMethod('/products', toBody())
-      setProducts([...products, newProduct])
+      // setProducts([...products, newProduct])
     }
   }
 
@@ -66,17 +67,6 @@ export default () => {
       colorId: null
     }
   }
-
-  const onMounted = async () => {
-    const [colorData, productsData] = await Promise.all([getMethod('/colors'), getMethod('/products')])
-
-    setProducts([...productsData])
-    setColors([...colorData])
-  }
-
-  useEffect(() => {
-    onMounted()
-  }, [])
 
   return (
     <>

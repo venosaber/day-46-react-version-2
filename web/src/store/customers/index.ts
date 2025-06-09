@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {getMethod, postMethod} from "../../utils";
+import {getMethod, postMethod, putMethod} from "../../utils";
 
 
 export const getCustomers = createAsyncThunk('customers/getCustomers', async () => {
@@ -8,6 +8,11 @@ export const getCustomers = createAsyncThunk('customers/getCustomers', async () 
 
 export const createCustomer = createAsyncThunk('customers/createCustomer', async (customer) => {
   return await postMethod('/customers/', customer)
+})
+
+export const updateCustomer = createAsyncThunk('customers/update', async (customer) => {
+  console.log('payload', customer)
+  return await putMethod(`/customers/${customer.id}`, customer)
 })
 
 const customersSlice = createSlice({
@@ -29,6 +34,15 @@ const customersSlice = createSlice({
       state.isLoading = false
       // @ts-ignore
       state.data = [...state.data, action.payload]
+    })
+    builder.addCase(updateCustomer.fulfilled, (state, action) => {
+      state.isLoading = false
+
+      const updateIndex = state.data.findIndex(
+        (e: any) => Number(e.id) === Number(action.payload.id)
+      )
+      // @ts-ignore
+      state.data[updateIndex] = action.payload
     })
   }
 })

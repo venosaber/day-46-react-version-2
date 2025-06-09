@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 import {useState, useEffect, useCallback} from "react";
 import {getMethod, postMethod, putMethod} from "../../utils/api.ts";
 import {useSelector} from "react-redux";
-import store, {getCustomers, createCustomer} from '../../store'
+import store, {getCustomers, createCustomer, updateCustomer} from '../../store'
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -42,20 +42,10 @@ export default () => {
   const onSave = async () => {
     setIsOpenDialog(false)
 
-    if (curCustomer.id) {
-      const newCustomer: Customer = await putMethod(`/customers/${curCustomer.id}`, toBody())
-      const updateIndex = customers.findIndex(
-        (e: Customer) => Number(e.id) === Number(curCustomer.id)
-      )
-      customers[updateIndex] = newCustomer
-      // setCustomers([...customers])
-    }
-    else {
-      // const newCustomer: Customer = await postMethod('/customers', toBody())
-      // setCustomers([...customers, newCustomer])
-      // @ts-ignore
-      store.dispatch(createCustomer(toBody()))
-    }
+    // @ts-ignore
+    if (curCustomer.id) store.dispatch(updateCustomer({...toBody(), id: curCustomer.id}))
+    // @ts-ignore
+    else store.dispatch(createCustomer(toBody()))
   }
 
   const toBody = () => {
