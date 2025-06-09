@@ -49,6 +49,10 @@ export class OrderService extends BaseService {
             'id', customer.id,
             'name', customer.name
           ) as customer,
+          jsonb_build_object(
+                  'id', employee.id,
+                  'name', employee.name
+          ) as employee,
           "order".delivery_address,
           "order".comment,
           json_agg(
@@ -63,7 +67,8 @@ export class OrderService extends BaseService {
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
         join customer on customer.id = "order".customer_id
-        group by "order".id, customer.id
+        join employee on employee.id = "order".employee_id
+        group by "order".id, customer.id, employee.id
     `)
 
     return dataSource
