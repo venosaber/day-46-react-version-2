@@ -45,6 +45,10 @@ export class OrderService extends BaseService {
     
         select
           "order".id,
+          jsonb_build_object(
+            'id', customer.id,
+            'name', customer.name
+          ) as customer,
           "order".delivery_address,
           "order".comment,
           json_agg(
@@ -58,7 +62,8 @@ export class OrderService extends BaseService {
         
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
-        group by "order".id
+        join customer on customer.id = "order".customer_id
+        group by "order".id, customer.id
     `)
 
     return dataSource
@@ -72,6 +77,8 @@ export class OrderService extends BaseService {
     console.log(orderDto)
     const order = toCamelCase(await super.create({
       employeeId: orderDto.employeeId,
+      customerId: orderDto.customerId,
+      deliveryAddress: orderDto.deliveryAddress,
       comment: orderDto.comment
     }))
     console.log(order)
