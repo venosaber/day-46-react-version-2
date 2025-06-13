@@ -33,6 +33,7 @@ export interface Customer extends Master {
 }
 
 export interface OrderDetail {
+  id: number
   productId: number,
   price: number,
   quantity: number

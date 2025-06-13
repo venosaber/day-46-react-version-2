@@ -45,7 +45,7 @@ export class OrderService extends BaseService {
     
         select
           "order".id,
-          to_char("order".sale_date, 'YYYY-MM-DD') as saleDate,
+          to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
           jsonb_build_object(
             'id', customer.id,
             'name', customer.name
@@ -54,7 +54,7 @@ export class OrderService extends BaseService {
                   'id', employee.id,
                   'name', employee.name
           ) as employee,
-          "order".delivery_address as deliveryAddress,
+          "order".delivery_address as "deliveryAddress",
           "order".comment,
           json_agg(
             json_build_object(
@@ -94,7 +94,7 @@ export class OrderService extends BaseService {
     
         select
           "order".id,
-          to_char("order".sale_date, 'YYYY-MM-DD') as saleDate,
+          to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
           jsonb_build_object(
             'id', customer.id,
             'name', customer.name
@@ -103,7 +103,7 @@ export class OrderService extends BaseService {
                   'id', employee.id,
                   'name', employee.name
           ) as employee,
-          "order".delivery_address as deliveryAddress,
+          "order".delivery_address as "deliveryAddress",
           "order".comment,
           json_agg(
             json_build_object(
