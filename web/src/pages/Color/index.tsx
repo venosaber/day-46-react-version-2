@@ -1,9 +1,9 @@
 import {FTable, FHeader, ColorDialog, SearchBar} from '../../components'
 import {Color, Header} from '../../utils'
 import {Box} from "@mui/material";
-import {useState, useCallback} from "react";
-import {useSelector} from "react-redux";
-import store, {RootState, createColor, updateColor} from "../../store";
+import {useState, useEffect, useCallback} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, createColor, deleteColor, getColors, RootState, updateColor} from "../../store";
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -11,36 +11,42 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
-const defaultColor = {
-  id: 0,
-  name: ''
-}
-
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curColor, setCurColor] = useState<Color>({...defaultColor})
-  const {data: colors} = useSelector((state: RootState) => state.colors)
-  // const [colors, setColors] = useState<Color[]>([])
+  const [curColor, setCurColor] = useState<Color>({
+    id: 0,
+    name: ''
+  })
+
+  const {data: colors} = useSelector((state: RootState) => state.colors);
+  const dispatch: AppDispatch = useDispatch();
 
   const onAdd = () => {
-    setCurColor({...defaultColor})
     setIsOpenDialog(true)
   }
 
   const onUpdate = useCallback((id: number) => {
-    // @ts-ignore
-    setCurColor({...colors.find(e => e.id === id)})
+    const currentColor: Color = colors.find((c: Color) => c.id === id)!;
+    setCurColor({...currentColor})
     setIsOpenDialog(true)
   }, [colors])
 
   const onSave = async () => {
     setIsOpenDialog(false)
 
-    // @ts-ignore
-    if (curColor.id) store.dispatch(updateColor({...toBody(), id: curColor.id}))
-    // @ts-ignore
-    else store.dispatch(createColor(toBody()))
+    if (curColor.id) {
+      const newColor = {...toBody(), id: curColor.id}
+      dispatch(updateColor(newColor))
+    }
+    else {
+      const newColor = {...toBody(), id: 0}
+      dispatch(createColor(newColor))
+    }
   }
+
+  const onDelete = useCallback((id: number)=>{
+    dispatch(deleteColor(id))
+  }, [dispatch])
 
   const toBody = () => {
     return {
@@ -48,25 +54,30 @@ export default () => {
     }
   }
 
-  return (
-    <>
-      <FHeader title={'Colors'}/>
-      <Box sx={{maxWidth: 500, margin: 'auto'}}>
-        <SearchBar onAdd={onAdd}/>
+  useEffect(()=>{
+    dispatch(getColors())
+  },[dispatch])
 
-        <FTable
-          headers={headers}
-          rows={colors}
-          onUpdate={onUpdate}
-        />
-        <ColorDialog
-          color={curColor}
-          setColor={setCurColor}
-          onSave={onSave}
-          isOpen={isOpenDialog}
-          onClose={() => setIsOpenDialog(false)}
-        />
-      </Box>
-    </>
+  return (
+      <>
+        <FHeader title={'Colors'}/>
+        <Box sx={{maxWidth: 500, margin: 'auto'}}>
+          <SearchBar onAdd={onAdd}/>
+
+          <FTable
+              headers={headers}
+              rows={colors}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+          />
+          <ColorDialog
+              color={curColor}
+              setColor={setCurColor}
+              onSave={onSave}
+              isOpen={isOpenDialog}
+              onClose={() => setIsOpenDialog(false)}
+          />
+        </Box>
+      </>
   )
 }

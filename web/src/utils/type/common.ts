@@ -4,12 +4,12 @@ export interface Header {
   displayProperty?: string
 }
 
-interface Master {
-  id?: number
-  name: string
+export interface Master {
+  id: number | null
+  name?: string
 }
 
-export interface Color extends Master {}
+export type Color = Master
 
 export interface Employee extends Master{
   age: number | null | string
@@ -32,11 +32,47 @@ export interface Customer extends Master {
   description: string | null
 }
 
-export interface OrderDetail {
-  id: number
-  productId: number,
-  price: number,
-  quantity: number
-  amount: number,
-  isValid: boolean
+export interface OrderGet{
+  id: number | null,
+  saleDate: string,
+  customer: {
+    id: number | null,
+    name: string
+  },
+  employee: {
+    id: number | null,
+    name: string
+  },
+  deliveryAddress: string,
+  comment: string,
+  details: OrderDetailGet[]
+}
+
+export interface OrderPost {
+  id: number | null,
+  customerId: number | string,
+  saleDate: string,
+  deliveryAddress: string,
+  employeeId: number | string,
+  comment: string,
+  details: OrderDetailPost[]
+}
+
+export interface OrderDetailGet {
+  product: {
+    id: number | null,
+    name: string,
+  },
+  price: number | string,
+  quantity: number | string,
+  amount: number | string,
+}
+
+export interface OrderDetailPost {
+  productId: number | string,
+  price: number | string,
+  quantity: number | string,
+  amount: number | string,
+  // not for api, just for display
+  product: string
 }

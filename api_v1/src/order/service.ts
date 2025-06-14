@@ -3,9 +3,9 @@ import {DataSource, Repository} from 'typeorm';
 import { OrderEntity } from './entity';
 import { BaseService } from "../base/service";
 import { EmployeeEntity } from "../employee/entity";
-import { CreateOrderDto } from "./dto";
+import { CreateOrderDto, UpdateOrderDto } from "./dto";
 import { OrderDetailService } from "../orderDetail/service";
-import { CreateOrderDetailDto } from "../orderDetail/dto";
+import { CreateOrderDetailDto, UpdateOrderDetailDto } from "../orderDetail/dto";
 import { toCamelCase } from "../utils";
 import {OrderDetailEntity} from "../orderDetail/entity";
 
@@ -42,7 +42,7 @@ export class OrderService extends BaseService {
           join product on product.id = order_detail.product_id
           where order_detail.active
         )
-    
+
         select
           "order".id,
           to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
@@ -64,7 +64,7 @@ export class OrderService extends BaseService {
               'amount', order_detail_tmp.amount
             )
           ) as details
-        
+
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
         join customer on customer.id = "order".customer_id
@@ -91,7 +91,7 @@ export class OrderService extends BaseService {
           join product on product.id = order_detail.product_id
           where order_detail.active
         )
-    
+
         select
           "order".id,
           to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
@@ -113,7 +113,7 @@ export class OrderService extends BaseService {
               'amount', order_detail_tmp.amount
             )
           ) as details
-        
+
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
         join customer on customer.id = "order".customer_id
@@ -141,5 +141,56 @@ export class OrderService extends BaseService {
 
     order.details = orderDetails
     return order
+  }
+
+  async updateOne(id: number, updateOrderDto: UpdateOrderDto): Promise<any> {
+    // Update order information
+    const order = toCamelCase(await super.updateOne(id, {
+      saleDate: updateOrderDto.saleDate,
+      employeeId: updateOrderDto.employeeId,
+      customerId: updateOrderDto.customerId,
+      deliveryAddress: updateOrderDto.deliveryAddress,
+      comment: updateOrderDto.comment
+    }));
+
+    // Get existing order details
+    const existingDetails = await this.dataSource.getRepository(OrderDetailEntity)
+      .createQueryBuilder('order_detail')
+      .where('order_detail.order_id = :orderId', { orderId: id })
+      .andWhere('order_detail.active = true')
+      .getMany();
+
+    // Soft delete all existing order details
+    if (existingDetails.length > 0) {
+      await this.dataSource.getRepository(OrderDetailEntity)
+        .createQueryBuilder()
+        .update()
+        .set({ active: false })
+        .where('order_id = :orderId', { orderId: id })
+        .execute();
+    }
+
+    // Create new order details
+    let orderDetails = updateOrderDto.details.map((detail: UpdateOrderDetailDto) => {
+      return { ...detail, orderId: id }
+    });
+    orderDetails = toCamelCase(await this.orderDetailService.create(orderDetails));
+
+    // Return updated order with new details
+    order.details = orderDetails;
+    return order;
+  }
+
+  async softDelete(id: number): Promise<any> {
+    // Soft delete all order details first
+    await this.dataSource.getRepository(OrderDetailEntity)
+      .createQueryBuilder()
+      .update()
+      .set({ active: false })
+      .where('order_id = :orderId', { orderId: id })
+      .execute();
+
+    // Then soft delete the order
+    return super.softDelete(id);
   }
 }

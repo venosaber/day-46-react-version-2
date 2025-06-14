@@ -1,9 +1,10 @@
 import {FTable, FHeader, CustomerDialog, SearchBar} from '../../components'
 import {Customer, Header} from '../../utils'
 import {Box} from "@mui/material";
-import {useState, useCallback} from "react";
-import {useSelector} from "react-redux";
-import store, {createCustomer, RootState, updateCustomer} from '../../store'
+import {useState, useEffect, useCallback} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {getCustomers, createCustomer, deleteCustomer, updateCustomer} from '../../store'
+import type {RootState, AppDispatch} from '../../store'
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -14,38 +15,47 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
-const defaultCustomer = {
-  id: 0,
-  name: '',
-  companyName: '',
-  address: '',
-  description: ''
-}
-
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curCustomer, setCurCustomer] = useState<Customer>({...defaultCustomer})
-  const {data: customers} = useSelector((state: RootState) => state.customers)
+  const emptyCurCustomer = {
+    id: 0,
+    name: '',
+    companyName: '',
+    address: '',
+    description: ''
+  }
+  const [curCustomer, setCurCustomer] = useState<Customer>(emptyCurCustomer)
+
+  const {data: customers} = useSelector((state: RootState) => state.customers);
+  const dispatch: AppDispatch = useDispatch();
 
   const onAdd = () => {
-    setCurCustomer({...defaultCustomer})
+    setCurCustomer(emptyCurCustomer)
     setIsOpenDialog(true)
   }
 
   const onUpdate = useCallback((id: number) => {
-    // @ts-ignore
-    setCurCustomer({...customers.find(e => e.id === id)})
+    const currentCustomer: Customer = customers.find((c: Customer) => c.id === id)!;
+    setCurCustomer({...currentCustomer})
     setIsOpenDialog(true)
   }, [customers])
 
   const onSave = async () => {
     setIsOpenDialog(false)
 
-    // @ts-ignore
-    if (curCustomer.id) store.dispatch(updateCustomer({...toBody(), id: curCustomer.id}))
-    // @ts-ignore
-    else store.dispatch(createCustomer(toBody()))
+    if (curCustomer.id) {
+      const newCustomer = {...toBody(), id: curCustomer.id}
+      dispatch(updateCustomer(newCustomer))
+    }
+    else {
+      const newCustomer = {...toBody(), id: 0}
+      dispatch(createCustomer(newCustomer))
+    }
   }
+
+  const onDelete = useCallback((id: number)=>{
+    dispatch(deleteCustomer(id))
+  }, [dispatch])
 
   const toBody = () => {
     return {
@@ -56,25 +66,31 @@ export default () => {
     }
   }
 
-  return (
-    <>
-      <FHeader title={'Customers'}/>
-      <Box className={'container'}>
-        <SearchBar onAdd={onAdd}/>
+  useEffect(()=>{
+    dispatch(getCustomers())
+  },[dispatch])
 
-        <FTable
-          headers={headers}
-          rows={customers}
-          onUpdate={onUpdate}
-        />
-        <CustomerDialog
-          customer={curCustomer}
-          setCustomer={setCurCustomer}
-          onSave={onSave}
-          isOpen={isOpenDialog}
-          onClose={() => setIsOpenDialog(false)}
-        />
-      </Box>
-    </>
+
+  return (
+      <>
+        <FHeader title={'Customers'}/>
+        <Box className={'container'}>
+          <SearchBar onAdd={onAdd}/>
+
+          <FTable
+              headers={headers}
+              rows={customers}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+          />
+          <CustomerDialog
+              customer={curCustomer}
+              setCustomer={setCurCustomer}
+              onSave={onSave}
+              isOpen={isOpenDialog}
+              onClose={() => setIsOpenDialog(false)}
+          />
+        </Box>
+      </>
   )
 }

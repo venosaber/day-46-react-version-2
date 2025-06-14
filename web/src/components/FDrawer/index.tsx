@@ -85,6 +85,13 @@ export default function ({isOpen, setIsOpen}: FDrawer) {
                 </ListItemIcon>
                 <ListItemText primary="Customer" />
               </ListItemButton>
+
+              <ListItemButton  sx={{ pl: 4 }} onClick={() => goTo('/order/')}>
+                <ListItemIcon>
+                  <GroupOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Order" />
+              </ListItemButton>
             </List>
           </Collapse>
         </List>

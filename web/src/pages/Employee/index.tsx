@@ -1,9 +1,10 @@
-import {useState} from 'react';
-import {EmployeeDialog, FHeader, FTable, SearchBar,} from '../../components'
-import {Header, Employee} from '../../utils'
-import {Box} from "@mui/material"
-import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import {FTable, FHeader, EmployeeDialog, SearchBar} from '../../components'
+import {Employee, Header} from '../../utils'
+import {Box} from "@mui/material";
+import {useState, useEffect, useCallback} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {getEmployees, createEmployee, deleteEmployee, updateEmployee} from '../../store'
+import type {RootState, AppDispatch} from '../../store'
 
 const headers: Header[] = [
   {name: 'id', text: 'ID'},
@@ -16,40 +17,49 @@ const headers: Header[] = [
   {name: 'action', text: ''}
 ]
 
-const defaultEmployee = {
-  id: 0,
-  name: '',
-  age: '',
-  salary: '',
-  address: '',
-  position: '',
-  status: ''
-}
-
 export default () => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false)
-  const [curEmployee, setCurEmployee] = useState<Employee>({...defaultEmployee})
+  const emptyCurEmployee = {
+    id: 0,
+    name: '',
+    age: '',
+    address: '',
+    salary: '',
+    position: '',
+    status: ''
+  }
+  const [curEmployee, setCurEmployee] = useState<Employee>(emptyCurEmployee)
 
-  const {data: employees} = useSelector((state: RootState) => state.employees)
+  const {data: employees} = useSelector((state: RootState) => state.employees);
+  const dispatch: AppDispatch = useDispatch();
+
   const onAdd = () => {
-    setCurEmployee({...defaultEmployee})
+    setCurEmployee({...emptyCurEmployee})
     setIsOpenDialog(true)
   }
 
-  const onUpdate = (id: number) => {
-    // @ts-ignore
-    setCurEmployee({...employees.find(e => e.id === id)})
+  const onUpdate = useCallback((id: number) => {
+    const currentEmployee: Employee = employees.find((c: Employee) => c.id === id)!;
+    setCurEmployee({...currentEmployee})
     setIsOpenDialog(true)
-  }
+  }, [employees])
 
   const onSave = async () => {
     setIsOpenDialog(false)
 
-    // @ts-ignore
-    if (curEmployee.id) store.dispatch(updateEmployee({...toBody(), id: curEmployee.id}))
-    // @ts-ignore
-    else store.dispatch(createEmployee(toBody()))
+    if (curEmployee.id) {
+      const newEmployee = {...toBody(), id: curEmployee.id}
+      dispatch(updateEmployee(newEmployee))
+    }
+    else {
+      const newEmployee = {...toBody(), id: 0}
+      dispatch(createEmployee(newEmployee))
+    }
   }
+
+  const onDelete = useCallback((id: number)=>{
+    dispatch(deleteEmployee(id))
+  }, [dispatch])
 
   const toBody = () => {
     return {
@@ -59,25 +69,31 @@ export default () => {
     }
   }
 
-  return (
-    <>
-      <FHeader title={'Employees'}/>
-      <Box className={'container'}>
-        <SearchBar onAdd={onAdd}/>
+  useEffect(()=>{
+    dispatch(getEmployees())
+  },[dispatch])
 
-        <FTable
-          headers={headers}
-          rows={employees}
-          onUpdate={onUpdate}
-        />
-        <EmployeeDialog
-          employee={curEmployee}
-          setEmployee={setCurEmployee}
-          onSave={onSave}
-          isOpen={isOpenDialog}
-          onClose={() => setIsOpenDialog(false)}
-        />
-      </Box>
-    </>
+
+  return (
+      <>
+        <FHeader title={'Employees'}/>
+        <Box className={'container'}>
+          <SearchBar onAdd={onAdd}/>
+
+          <FTable
+              headers={headers}
+              rows={employees}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+          />
+          <EmployeeDialog
+              employee={curEmployee}
+              setEmployee={setCurEmployee}
+              onSave={onSave}
+              isOpen={isOpenDialog}
+              onClose={() => setIsOpenDialog(false)}
+          />
+        </Box>
+      </>
   )
 }
