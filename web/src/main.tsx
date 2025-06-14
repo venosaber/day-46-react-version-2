@@ -2,7 +2,7 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import router from "./router"
-import store, {getProducts, getCustomers, getColors, getEmployees, getOrders} from './store'
+import store, {getProducts, getCustomers, getColors, getEmployees} from './store'
 import {Provider} from "react-redux";
 import {RouterProvider} from "react-router";
 import {ToastContainer} from "react-toastify";
@@ -14,8 +14,6 @@ store.dispatch(getProducts())
 store.dispatch(getCustomers())
 store.dispatch(getColors())
 store.dispatch(getEmployees())
-
-store.dispatch(getOrders())
 
 createRoot(root!).render(
   <>

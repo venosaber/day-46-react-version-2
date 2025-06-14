@@ -10,7 +10,7 @@ export const getOrder = createAsyncThunk('orders/getOrder', async (id: number)=>
     return await getMethod(`/orders/${id}`);
 })
 
-export const createOrder = createAsyncThunk('orders/createOrder', async (order)=>{
+export const createOrder = createAsyncThunk('orders/createOrder', async (order: OrderPost)=>{
     return await postMethod('/orders', order);
 })
 

@@ -19,7 +19,7 @@ interface DetailHeader{
 }
 
 const emptyDetailGet: OrderDetailGet = { product: {id: null, name: ''}, price: '', quantity: '', amount: '' }
-const emptyDetailPost: OrderDetailPost = {productId: '', price: '', quantity: '', amount: '', product: ''}
+const emptyDetailPost = {productId: '', price: '', quantity: '', amount: '', product: ''}
 
 export default function() {
     const params = useParams();
@@ -160,13 +160,11 @@ export default function() {
     const onSave = () => {
         // update
         if(orderId!==0){
-            const newOrder = {...toBody(), id: orderId}
-            // @ts-expect-error the type is not clear
+            const newOrder: OrderPost = {...toBody(), id: orderId}
             dispatch(updateOrder(newOrder))
         } // create
         else{
-            const newOrder = {...toBody()}
-            // @ts-expect-error the type is not clear
+            const newOrder: OrderPost = {...toBody(), id: 0}
             dispatch(createOrder(newOrder))
         }
     }

@@ -74,5 +74,5 @@ export interface OrderDetailPost {
   quantity: number | string,
   amount: number | string,
   // not for api, just for display
-  product: string
+  // product: string
 }
