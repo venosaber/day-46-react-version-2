@@ -39,7 +39,7 @@ export default () => {
       dispatch(updateColor(newColor))
     }
     else {
-      const newColor = {...toBody(), id: 0}
+      const newColor = {...toBody()}
       dispatch(createColor(newColor))
     }
   }

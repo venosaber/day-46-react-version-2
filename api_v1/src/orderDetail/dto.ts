@@ -48,4 +48,19 @@ export class CreateOrderDetailDto {
   quantity: number
 }
 
-export class UpdateOrderDetailDto extends CreateOrderDetailDto {}
+export class UpdateOrderDetailDto extends CreateOrderDetailDto {
+  @ApiProperty({
+    type: 'integer',
+    nullable: false
+  })
+  @IsNumber({
+    allowNaN: false,
+    allowInfinity: false
+  }, {
+    message: 'id should be number'
+  })
+  @IsNotEmpty({
+    message: 'id should not be null'
+  })
+  id: number
+}

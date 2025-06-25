@@ -67,6 +67,23 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateOrderDetailDto.prototype, "quantity", void 0);
 class UpdateOrderDetailDto extends CreateOrderDetailDto {
+    id;
 }
 exports.UpdateOrderDetailDto = UpdateOrderDetailDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        type: 'integer',
+        nullable: false
+    }),
+    (0, class_validator_1.IsNumber)({
+        allowNaN: false,
+        allowInfinity: false
+    }, {
+        message: 'id should be number'
+    }),
+    (0, class_validator_1.IsNotEmpty)({
+        message: 'id should not be null'
+    }),
+    __metadata("design:type", Number)
+], UpdateOrderDetailDto.prototype, "id", void 0);
 //# sourceMappingURL=dto.js.map

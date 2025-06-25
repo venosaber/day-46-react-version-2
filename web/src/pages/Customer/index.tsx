@@ -48,7 +48,7 @@ export default () => {
       dispatch(updateCustomer(newCustomer))
     }
     else {
-      const newCustomer = {...toBody(), id: 0}
+      const newCustomer = {...toBody()}
       dispatch(createCustomer(newCustomer))
     }
   }

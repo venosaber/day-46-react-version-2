@@ -23,7 +23,7 @@ class BaseEntity {
 }
 exports.BaseEntity = BaseEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Number)
 ], BaseEntity.prototype, "id", void 0);
 __decorate([

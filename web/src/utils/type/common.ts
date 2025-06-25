@@ -59,6 +59,7 @@ export interface OrderPost {
 }
 
 export interface OrderDetailGet {
+  id: number | null,
   product: {
     id: number | null,
     name: string,
@@ -69,6 +70,7 @@ export interface OrderDetailGet {
 }
 
 export interface OrderDetailPost {
+  id: number | null,
   productId: number | string,
   price: number | string,
   quantity: number | string,

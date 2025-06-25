@@ -6,5 +6,7 @@ export declare class EmployeeController {
     get(): Promise<any[]>;
     create(createDto: CreateEmployeeDto): Promise<any>;
     update(id: number, updateDto: UpdateEmployeeDto): Promise<any>;
-    delete(id: number): Promise<any>;
+    delete(id: number): {
+        msg: string;
+    };
 }

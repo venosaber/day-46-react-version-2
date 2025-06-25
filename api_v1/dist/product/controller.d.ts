@@ -6,5 +6,7 @@ export declare class ProductController {
     get(): Promise<any[]>;
     create(createDto: CreateProductDto): Promise<any>;
     update(id: number, updateDto: UpdateProductDto): Promise<any>;
-    delete(id: number): Promise<any>;
+    delete(id: number): {
+        msg: string;
+    };
 }

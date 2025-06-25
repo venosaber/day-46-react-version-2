@@ -12,5 +12,8 @@ export declare abstract class BaseService {
     getList(condition?: any): Promise<any[]>;
     create(data: any): Promise<any>;
     updateOne(id: number, data: any): Promise<any>;
-    softDelete(id: number): Promise<any>;
+    updateMany(data: any[]): Promise<import("typeorm").InsertResult>;
+    softDelete(id: number): {
+        msg: string;
+    };
 }

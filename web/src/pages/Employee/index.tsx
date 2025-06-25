@@ -52,7 +52,7 @@ export default () => {
       dispatch(updateEmployee(newEmployee))
     }
     else {
-      const newEmployee = {...toBody(), id: 0}
+      const newEmployee = {...toBody()}
       dispatch(createEmployee(newEmployee))
     }
   }
@@ -63,9 +63,12 @@ export default () => {
 
   const toBody = () => {
     return {
-      ...curEmployee,
+      name: curEmployee.name,
       age: Number(curEmployee.age),
-      salary: Number(curEmployee.salary)
+      address: curEmployee.address,
+      salary: Number(curEmployee.salary),
+      position: curEmployee.position,
+      status: curEmployee.status
     }
   }
 

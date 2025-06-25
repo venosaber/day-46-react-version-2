@@ -37,20 +37,31 @@ class BaseService {
         return (0, utils_1.toCamelCase)(newData.raw[0]);
     }
     async updateOne(id, data) {
-        const newData = await this.repository
+        const query = this.repository
             .createQueryBuilder()
             .update()
             .set(data)
             .where("id = :id", { id })
-            .returning(this.columns.join(', '))
-            .execute();
+            .returning(this.columns.join(', '));
+        const newData = await query.execute();
         if (newData.affected === 0) {
             throw new common_1.NotFoundException(`Color with id ${id} not found`);
         }
         return (0, utils_1.toCamelCase)(newData.raw[0]);
     }
+    async updateMany(data) {
+        const result = await this.repository.upsert(data, ['id']);
+        return result;
+    }
     softDelete(id) {
-        return this.updateOne(id, { active: false });
+        this.repository
+            .createQueryBuilder()
+            .update()
+            .set({ active: false })
+            .where("id = :id", { id })
+            .returning(this.columns.join(', '))
+            .execute();
+        return { "msg": "deleted successfully" };
     }
 }
 exports.BaseService = BaseService;

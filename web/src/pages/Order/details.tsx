@@ -18,41 +18,29 @@ interface DetailHeader{
     width?: string
 }
 
-const emptyDetailGet: OrderDetailGet = { product: {id: null, name: ''}, price: '', quantity: '', amount: '' }
-const emptyDetailPost = {productId: '', price: '', quantity: '', amount: '', product: ''}
+const emptyDetailGet: OrderDetailGet = { id: null, product: {id: null, name: ''}, price: '', quantity: '', amount: '' }
+const emptyDetailPost = {id: null, productId: '', price: '', quantity: '', amount: '', product: ''}
 
 export default function() {
     const params = useParams();
     const orderId = Number(params.id);
 
     const dispatch: AppDispatch = useDispatch();
-    const employees: Employee[] = useSelector((state: RootState) => state.employees).data;
-    const customers: Customer[] = useSelector((state: RootState) => state.customers).data;
-    const products: Product[] = useSelector((state: RootState) => state.products).data;
+    const employees: Employee[] = useSelector((state: RootState) => state.employees)?.data ?? [];
+    const customers: Customer[] = useSelector((state: RootState) => state.customers)?.data ?? [];
+    const products: Product[] = useSelector((state: RootState) => state.products)?.data ?? [];
 
     const employeesStatus: boolean = useSelector((state: RootState)=> state.employees).isLoading;
     const customersStatus: boolean= useSelector((state: RootState)=> state.customers).isLoading;
     const productsStatus: boolean = useSelector((state: RootState)=> state.products).isLoading;
 
-    const [headers, setHeaders] = useState<DetailHeader[]>([
+    const headers: DetailHeader[] = [
         { name: 'product', items: products, dropdown: true, width: '30%' },
         { name: 'quantity', width: '15%' },
         { name: 'price', width: '15%' },
         { name: 'amount', width: '15%' },
         { name: 'comment', width: '25%' },
-    ])
-
-    // headers of FEditTable
-    useEffect(() => {
-        setHeaders((prev: DetailHeader[]) => {
-            const newHeaders = [...prev];
-            newHeaders[0] = {
-                ...newHeaders[0],
-                items: products
-            };
-            return newHeaders;
-        });
-    }, [products]);
+    ];
 
     /***** rows of FEditTable *********/
         // order state (original type)
@@ -86,8 +74,10 @@ export default function() {
             const orderData: OrderGet = await getMethod(`/orders/${orderId}`)
             setOrderGet(orderData);
 
+
             const orderDetailsPost: OrderDetailPost[] = orderData.details.map((detail: OrderDetailGet) => {
                 return {
+                    id: detail.id,
                     productId: detail.product.id!,
                     price: detail.price,
                     quantity: Number(detail.amount) / Number(detail.price),
@@ -139,12 +129,15 @@ export default function() {
 
     const toBody = () => {
         const details = orderPost.details.map((detail: OrderDetailPost) => {
-            return {
+            const coreDetail = {
                 productId: Number(detail.productId),
                 price: Number(detail.price),
                 quantity: Number(detail.quantity),
                 amount: Number(detail.amount)
             }
+
+            // create a new order => details don't have detail.id
+            return orderId === 0 ? coreDetail : { ...coreDetail, id: detail.id }
         })
 
         return {
@@ -160,11 +153,12 @@ export default function() {
     const onSave = () => {
         // update
         if(orderId!==0){
-            const newOrder: OrderPost = {...toBody(), id: orderId}
+            const newOrder = {...toBody(), id: orderId}
+            console.log(newOrder)
             dispatch(updateOrder(newOrder))
         } // create
         else{
-            const newOrder: OrderPost = {...toBody(), id: 0}
+            const newOrder = {...toBody()}
             dispatch(createOrder(newOrder))
         }
     }
@@ -193,7 +187,7 @@ export default function() {
                                 options={customers}
                                 getOptionLabel={(option: Customer) => option.name || ''}
                                 isOptionEqualToValue={(option: Customer, value: Customer) => option.id === value.id}
-                                value={customers.find(c => Number(c.id) === Number(orderPost.customerId))}
+                                value={customers?.find(c => Number(c.id) === Number(orderPost.customerId))||null}
                                 renderInput={
                                     (params) => <TextField {...params} label="Customer Name" />
                                 }
@@ -222,7 +216,7 @@ export default function() {
                                 getOptionLabel={(option: Employee) => option.name || ''}
                                 isOptionEqualToValue={(option: Employee, value: Employee) => option.id === value.id}
 
-                                value={employees.find((e: Employee) => Number(e.id) === Number(orderPost.employeeId))}
+                                value={employees?.find((e: Employee) => Number(e.id) === Number(orderPost.employeeId))||null}
                                 renderInput={
                                     (params) => <TextField {...params} label="Employee Name" />
                                 }

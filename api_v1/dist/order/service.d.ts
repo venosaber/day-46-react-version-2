@@ -12,6 +12,5 @@ export declare class OrderService extends BaseService {
     getOrders(): Promise<any>;
     getOne(id: number): Promise<any>;
     create(orderDto: CreateOrderDto): Promise<any>;
-    updateOne(id: number, updateOrderDto: UpdateOrderDto): Promise<any>;
-    softDelete(id: number): Promise<any>;
+    updateOne(id: number, orderDto: UpdateOrderDto): Promise<any>;
 }

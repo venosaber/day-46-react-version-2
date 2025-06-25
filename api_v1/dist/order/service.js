@@ -18,7 +18,6 @@ const typeorm_1 = require("typeorm");
 const service_1 = require("../base/service");
 const service_2 = require("../orderDetail/service");
 const utils_1 = require("../utils");
-const entity_1 = require("../orderDetail/entity");
 let OrderService = class OrderService extends service_1.BaseService {
     orderRepository;
     orderDetailService;
@@ -46,7 +45,7 @@ let OrderService = class OrderService extends service_1.BaseService {
           join product on product.id = order_detail.product_id
           where order_detail.active
         )
-
+    
         select
           "order".id,
           to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
@@ -68,7 +67,7 @@ let OrderService = class OrderService extends service_1.BaseService {
               'amount', order_detail_tmp.amount
             )
           ) as details
-
+        
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
         join customer on customer.id = "order".customer_id
@@ -93,7 +92,7 @@ let OrderService = class OrderService extends service_1.BaseService {
           join product on product.id = order_detail.product_id
           where order_detail.active
         )
-
+    
         select
           "order".id,
           to_char("order".sale_date, 'YYYY-MM-DD') as "saleDate",
@@ -115,7 +114,7 @@ let OrderService = class OrderService extends service_1.BaseService {
               'amount', order_detail_tmp.amount
             )
           ) as details
-
+        
         from "order"
         join order_detail_tmp on "order".id = order_detail_tmp.order_id
         join customer on customer.id = "order".customer_id
@@ -141,42 +140,15 @@ let OrderService = class OrderService extends service_1.BaseService {
         order.details = orderDetails;
         return order;
     }
-    async updateOne(id, updateOrderDto) {
-        const order = (0, utils_1.toCamelCase)(await super.updateOne(id, {
-            saleDate: updateOrderDto.saleDate,
-            employeeId: updateOrderDto.employeeId,
-            customerId: updateOrderDto.customerId,
-            deliveryAddress: updateOrderDto.deliveryAddress,
-            comment: updateOrderDto.comment
-        }));
-        const existingDetails = await this.dataSource.getRepository(entity_1.OrderDetailEntity)
-            .createQueryBuilder('order_detail')
-            .where('order_detail.order_id = :orderId', { orderId: id })
-            .andWhere('order_detail.active = true')
-            .getMany();
-        if (existingDetails.length > 0) {
-            await this.dataSource.getRepository(entity_1.OrderDetailEntity)
-                .createQueryBuilder()
-                .update()
-                .set({ active: false })
-                .where('order_id = :orderId', { orderId: id })
-                .execute();
-        }
-        let orderDetails = updateOrderDto.details.map((detail) => {
-            return { ...detail, orderId: id };
+    async updateOne(id, orderDto) {
+        const details = orderDto.details;
+        delete orderDto.details;
+        const order = super.updateOne(id, orderDto);
+        details.forEach((detail) => {
+            detail.orderId = order.id;
         });
-        orderDetails = (0, utils_1.toCamelCase)(await this.orderDetailService.create(orderDetails));
-        order.details = orderDetails;
-        return order;
-    }
-    async softDelete(id) {
-        await this.dataSource.getRepository(entity_1.OrderDetailEntity)
-            .createQueryBuilder()
-            .update()
-            .set({ active: false })
-            .where('order_id = :orderId', { orderId: id })
-            .execute();
-        return super.softDelete(id);
+        await this.orderDetailService.updateMany(details);
+        return this.getOne(id);
     }
 };
 exports.OrderService = OrderService;

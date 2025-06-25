@@ -6,5 +6,7 @@ export declare class CustomerController {
     get(): Promise<any[]>;
     create(createDto: CreateCustomerDto): Promise<any>;
     update(id: number, updateDto: UpdateCustomerDto): Promise<any>;
-    delete(id: number): Promise<any>;
+    delete(id: number): {
+        msg: string;
+    };
 }

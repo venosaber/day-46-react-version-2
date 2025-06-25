@@ -41,8 +41,8 @@ export default () => {
         }
 
         return orders.map((order: OrderGet) => {
-                const customer_name: string = order.customer?.name ?? 'N/A';
-                const employee_name: string = order.employee?.name ?? 'N/A';
+                const customer_name: string = order?.customer?.name || 'N/A';
+                const employee_name: string = order?.employee?.name || 'N/A';
                 return {
                     ...order,
                     customer_name,

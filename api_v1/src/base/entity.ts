@@ -1,8 +1,8 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm"
+import { Column, PrimaryColumn } from "typeorm"
 
 
 export abstract class BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number
 
   @Column({

@@ -4,4 +4,5 @@ export declare class CreateOrderDetailDto {
     quantity: number;
 }
 export declare class UpdateOrderDetailDto extends CreateOrderDetailDto {
+    id: number;
 }

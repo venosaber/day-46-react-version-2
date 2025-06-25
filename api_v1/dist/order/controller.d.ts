@@ -7,5 +7,7 @@ export declare class OrderController {
     getOne(id: number): Promise<any>;
     create(createDto: CreateOrderDto): Promise<any>;
     update(id: number, updateDto: UpdateOrderDto): Promise<any>;
-    delete(id: number): Promise<any>;
+    delete(id: number): {
+        msg: string;
+    };
 }

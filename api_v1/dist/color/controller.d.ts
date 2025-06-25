@@ -6,5 +6,7 @@ export declare class ColorController {
     getColor(): Promise<any[]>;
     createColor(createColorDto: CreateColorDto): Promise<any>;
     updateColor(id: number, updateColorDto: UpdateColorDto): Promise<any>;
-    deleteColor(id: number): Promise<any>;
+    deleteColor(id: number): {
+        msg: string;
+    };
 }
