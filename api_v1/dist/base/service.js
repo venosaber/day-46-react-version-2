@@ -50,6 +50,10 @@ class BaseService {
         return (0, utils_1.toCamelCase)(newData.raw[0]);
     }
     async updateMany(data) {
+        const metadata = this.repository.metadata;
+        const idColumn = metadata.columns.find(col => col.propertyName === 'id');
+        if (idColumn)
+            idColumn.isGenerated = false;
         const result = await this.repository.upsert(data, ['id']);
         return result;
     }
@@ -59,7 +63,15 @@ class BaseService {
             .update()
             .set({ active: false })
             .where("id = :id", { id })
-            .returning(this.columns.join(', '))
+            .execute();
+        return { "msg": "deleted successfully" };
+    }
+    softDeleteMany(ids) {
+        this.repository
+            .createQueryBuilder()
+            .update()
+            .set({ active: false })
+            .where("id in :id", { ids })
             .execute();
         return { "msg": "deleted successfully" };
     }

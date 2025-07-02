@@ -58,6 +58,10 @@ export abstract class BaseService {
   }
 
   async updateMany(data: any[]) {
+    const metadata = this.repository.metadata;
+    const idColumn = metadata.columns.find(col => col.propertyName === 'id');
+    if (idColumn) idColumn.isGenerated = false;
+
     const result = await this.repository.upsert(data, ['id'])
     return result
   }
@@ -66,9 +70,19 @@ export abstract class BaseService {
     this.repository
       .createQueryBuilder()
       .update()
-      .set({active: false})
-      .where("id = :id", { id })
-      .returning(this.columns.join(', '))
+      .set({active: false} as any)
+      .where("id = :id", {id})
+      .execute()
+
+    return {"msg": "deleted successfully"}
+  }
+
+  softDeleteMany(ids: number[]) {
+    this.repository
+      .createQueryBuilder()
+      .update()
+      .set({active: false} as any)
+      .where("id in :id", {ids})
       .execute()
 
     return {"msg": "deleted successfully"}

@@ -16,4 +16,7 @@ export declare abstract class BaseService {
     softDelete(id: number): {
         msg: string;
     };
+    softDeleteMany(ids: number[]): {
+        msg: string;
+    };
 }
